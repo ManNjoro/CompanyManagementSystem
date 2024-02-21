@@ -5,6 +5,7 @@ namespace CompanyManagementSystem.Models
 {
     public class BranchSupplier
     {
+        [Key]
         [MaxLength(255)]
         [ForeignKey("Branch")]
         public string BranchId { get; set; }
@@ -16,8 +17,14 @@ namespace CompanyManagementSystem.Models
         public string SupplyType { get; set; }
 
         public Branch Branch { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime UpdatedAt { get; set; }
 
-        [Key]
-        public string CompositeKey { get; set; }
+        public BranchSupplier()
+        {
+            UpdatedAt = CreatedAt;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace CompanyManagementSystem.Models
     {
         [Key]
         [MaxLength(255)]
-        public string EmpId { get; set; }
+        public string EmpId { get; set; } = Guid.NewGuid().ToString();
 
         [MaxLength(40)]
         public string FirstName { get; set; }
@@ -24,12 +24,21 @@ namespace CompanyManagementSystem.Models
 
         [MaxLength(255)]
         [ForeignKey("Employee")]
-        public string SupervisorId { get; set; }
+        public string? SupervisorId { get; set; }
 
         [MaxLength(255)]
         [ForeignKey("Branch")]
         public string BranchId { get; set; }
 
         public ICollection<Client> Clients { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
+        public DateTime UpdatedAt { get; set; }
+
+        public Employee()
+        {
+            UpdatedAt = CreatedAt;
+        }
     }
 }
