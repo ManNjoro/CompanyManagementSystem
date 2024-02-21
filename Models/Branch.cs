@@ -1,5 +1,4 @@
-﻿using CompanyManagementSystem.Models.Company.Models;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace CompanyManagementSystem.Models
