@@ -60,7 +60,15 @@ namespace CompanyManagementSystem.Controllers
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
-            return View();
+            var model = new Employee();
+
+            // Populate select options
+            model.SexOptions = new List<SelectListItem>
+            {
+                new SelectListItem { Value = "M", Text = "Male" },
+                new SelectListItem { Value = "F", Text = "Female" }
+            };
+            return View(model);
         }
     }
 }
