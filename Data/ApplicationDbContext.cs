@@ -23,10 +23,28 @@ namespace CompanyManagementSystem.Data
 
             modelBuilder.Entity<WorksWith>()
                 .HasKey(w => new { w.EmpId, w.ClientId });
+            modelBuilder.Entity<WorksWith>()
+                .HasOne(w => w.Employee)
+                .WithMany()
+                .HasForeignKey(w => w.EmpId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<WorksWith>()
+                .HasOne(w => w.Client)
+                .WithMany()
+                .HasForeignKey(w => w.ClientId)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Employee>()
-        .HasOne(e => e.Supervisor)
-        .WithMany()
-        .HasForeignKey(e => e.SupervisorId);
+                .HasOne(e => e.Supervisor)
+                .WithMany()
+                .HasForeignKey(e => e.SupervisorId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Employee>()
+                .HasOne(e => e.Branch)
+                .WithMany(b => b.Employees)
+                .HasForeignKey(e => e.BranchId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

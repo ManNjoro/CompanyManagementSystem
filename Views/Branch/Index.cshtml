@@ -44,27 +44,31 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
+                <th>Branch ID</th>
+                <th>Branch Name</th>
+                <th>Manager ID</th>
+                <th>Manager StartDate</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var category in Model)
+            @foreach (var branch in Model)
             {
                 <tr>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td><a class="btn btn-success" asp-controller="categories" asp-action="edit" asp-route-id="">Edit</a></td>
+                    <td>@branch.BranchId</td>
+                    <td>@branch.BranchName</td>
+                    <td>@branch.ManagerId</td>
+                    <td>@branch.ManagerStartDate.ToString("dd/MM/yyyy")</td>
+                    <td><a class="btn btn-success" asp-controller="branch" asp-action="edit" asp-route-id="@branch.BranchId">Edit</a></td>
                     <td>
                         <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-" data-store-id="" id="deleteUser">Delete</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@branch.BranchId" data-store-id="@branch.BranchId" id="deleteUser">Delete</button>
                         </div>
                     </td>
                 </tr>
                 <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-d" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteUser-@branch.BranchId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -76,7 +80,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="categories" asp-action="delete" asp-route-categoryid="" id="confirm-delete-user">Ok</a>
+                                <a class="btn btn-primary" asp-controller="branch" asp-action="delete" asp-route-branchid="@branch.BranchId" id="confirm-delete-user">Ok</a>
                             </div>
                         </div>
                     </div>

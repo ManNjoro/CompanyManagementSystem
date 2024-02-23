@@ -19,6 +19,7 @@ namespace CompanyManagementSystem.Models
         public string LastName { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime BirthDay { get; set; }
 
         [Required]
@@ -34,6 +35,8 @@ namespace CompanyManagementSystem.Models
         [ForeignKey("Supervisor")]
         public string? SupervisorId { get; set; }
 
+
+        public Branch? Branch { get; set; }
         [MaxLength(255)]
         [ForeignKey("Branch")]
         public string? BranchId { get; set; }

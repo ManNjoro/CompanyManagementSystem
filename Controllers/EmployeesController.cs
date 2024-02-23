@@ -51,7 +51,7 @@ namespace CompanyManagementSystem.Controllers
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = employees.Skip(recSkip).Take(pager.PageSize).ToList();
-            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "employee", SearchText = SearchText };
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "employees", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
@@ -168,6 +168,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    TempData["AlertMessage"] = "Employee Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -180,6 +181,27 @@ namespace CompanyManagementSystem.Controllers
 
             // If ModelState is not valid, return the same view with validation errors
             return View(employee);
+        }
+
+        public IActionResult Delete(string employeeId)
+        {
+            try
+            {
+                var employee = _db.Employees.Find(employeeId);
+                if (employee != null)
+                {
+                    _db.Employees.Remove(employee);
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Employee Deleted Successfully...";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                Console.WriteLine($"Error deleting category: {ex.Message}");
+                throw; // Re-throw the exception to propagate it up the call stack
+            }
+            return RedirectToAction(nameof(Index));
         }
 
     }

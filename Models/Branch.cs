@@ -20,6 +20,7 @@ namespace CompanyManagementSystem.Models
         public string ManagerId { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime ManagerStartDate { get; set; }
 
         public ICollection<Employee>? Employees { get; set; }

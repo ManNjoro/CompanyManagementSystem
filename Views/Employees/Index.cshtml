@@ -63,7 +63,7 @@
                     <td>@employee.EmpId</td>
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
-                    <td>@employee.BirthDay</td>
+                    <td>@employee.BirthDay.ToString("dd/MM/yyyy")</td>
                     <td>@employee.Sex</td>
                     <td>@employee.Salary</td>
                     <td>@employee.SupervisorId</td>
@@ -76,7 +76,7 @@
                     </td>
                 </tr>
                 <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-d" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteUser-@employee.EmpId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -88,7 +88,7 @@
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="categories" asp-action="delete" asp-route-categoryid="" id="confirm-delete-user">Ok</a>
+                                <a class="btn btn-primary" asp-controller="employees" asp-action="delete" asp-route-employeeid="@employee.EmpId" id="confirm-delete-user">Ok</a>
                             </div>
                         </div>
                     </div>

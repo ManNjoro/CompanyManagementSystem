@@ -71,5 +71,104 @@ namespace CompanyManagementSystem.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Add(Branch branch)
+        {
+            if (branch == null)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                _db.Branches.Add(branch);
+                _db.SaveChanges();
+                TempData["AlertMessage"] = "Branch Created Successfully...";
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(branch);
+        }
+
+        public IActionResult Edit(string id)
+        {
+            ViewBag.Action = "Edit";
+            var branch = _db.Branches.Find(id);
+            if (branch == null)
+            {
+                return NotFound();
+            }
+
+
+            var employees = _db.Employees.ToList();
+
+            branch.EmployeeOptions = employees.Select(e => new SelectListItem
+            {
+                Value = e.EmpId,
+                Text = $"{e.FirstName} {e.LastName}"
+            }).ToList();
+
+            return View(branch);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(Branch branch)
+        {
+            // Retrieve the employee to update from the database
+            var branchToUpdate = _db.Branches.Find(branch.BranchId);
+
+            if (branchToUpdate == null)
+            {
+                // If the employee is not found, return a NotFoundResult or handle the case appropriately
+                return NotFound();
+            }
+
+            // Update the properties of the retrieved employee with the values from the posted model
+            branchToUpdate.BranchName = branch.BranchName;
+            branchToUpdate.ManagerId = branch.ManagerId;
+            branchToUpdate.ManagerStartDate = branch.ManagerStartDate;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Branch Updated Successfully...";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception or handle it appropriately
+                    Console.WriteLine($"Error updating employee: {ex.Message}");
+                    throw; // Re-throw the exception to propagate it up the call stack
+                }
+            }
+
+            // If ModelState is not valid, return the same view with validation errors
+            return View(branch);
+        }
+
+        public IActionResult Delete(string branchId)
+        {
+            try
+            {
+                var branch = _db.Branches.Find(branchId);
+                if (branch != null)
+                {
+                    _db.Branches.Remove(branch);
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Branch Deleted Successfully...";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                Console.WriteLine($"Error deleting category: {ex.Message}");
+                throw; // Re-throw the exception to propagate it up the call stack
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
