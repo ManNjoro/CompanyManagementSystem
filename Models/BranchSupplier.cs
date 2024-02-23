@@ -6,7 +6,6 @@ namespace CompanyManagementSystem.Models
 {
     public class BranchSupplier
     {
-        [Key]
         [MaxLength(255)]
         [ForeignKey("Branch")]
         public string BranchId { get; set; }

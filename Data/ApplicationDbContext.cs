@@ -45,6 +45,15 @@ namespace CompanyManagementSystem.Data
                 .WithMany(b => b.Employees)
                 .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<BranchSupplier>()
+                .HasKey(bs=> new {bs.BranchId, bs.SupplierName});
+
+            modelBuilder.Entity<BranchSupplier>()
+                .HasOne(bs => bs.Branch)
+                .WithMany(b => b.BranchSuppliers)
+                .HasForeignKey(bs => bs.BranchId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

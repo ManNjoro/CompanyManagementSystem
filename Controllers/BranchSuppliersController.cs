@@ -96,10 +96,10 @@ namespace CompanyManagementSystem.Controllers
             return View(branchSupplier);
         }
 
-        public IActionResult Edit(string id)
+        public IActionResult Edit(string id, string supplierName)
         {
             ViewBag.Action = "Edit";
-            var supplier = _db.BranchesSupplier.Find(id);
+            var supplier = _db.BranchesSupplier.Find(id, supplierName);
             if (supplier == null)
             {
                 return NotFound();
@@ -111,7 +111,8 @@ namespace CompanyManagementSystem.Controllers
             supplier.BranchOptions = branches.Select(b => new SelectListItem
             {
                 Value = b.BranchId,
-                Text = b.BranchName
+                Text = b.BranchName,
+                Selected = b.BranchId == supplier.BranchId
             }).ToList();
 
             return View(supplier);
@@ -121,7 +122,7 @@ namespace CompanyManagementSystem.Controllers
         public IActionResult Edit(BranchSupplier supplier)
         {
             // Retrieve the employee to update from the database
-            var supplierToUpdate = _db.BranchesSupplier.Find(supplier.BranchId);
+            var supplierToUpdate = _db.BranchesSupplier.Find(supplier.BranchId, supplier.SupplierName);
 
             if (supplierToUpdate == null)
             {
