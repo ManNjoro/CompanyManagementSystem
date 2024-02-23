@@ -10,17 +10,22 @@ namespace CompanyManagementSystem.Models
         [MaxLength(255)]
         public string EmpId { get; set; } = Guid.NewGuid().ToString();
 
+        [Required]
         [MaxLength(40)]
         public string FirstName { get; set; }
 
+        [Required]
         [MaxLength(40)]
         public string LastName { get; set; }
 
+        [Required]
         public DateTime BirthDay { get; set; }
 
+        [Required]
         [MaxLength(1)]
         public string Sex { get; set; }
 
+        [Required]
         public int Salary { get; set; }
 
         public virtual Employee Supervisor { get; set; }
@@ -31,7 +36,7 @@ namespace CompanyManagementSystem.Models
 
         [MaxLength(255)]
         [ForeignKey("Branch")]
-        public string BranchId { get; set; }
+        public string? BranchId { get; set; }
 
         public ICollection<Client> Clients { get; set; }
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]

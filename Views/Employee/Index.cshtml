@@ -44,22 +44,34 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
+                <th>EmployeeID</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Birthday</th>
+                <th>Sex</th>
+                <th>Salary</th>
+                <th>Supervisor ID</th>
+                <th>Branch ID</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var category in Model)
+            @foreach (var employee in Model)
             {
                 <tr>
-                    <td>Name</td>
-                    <td>Description</td>
-                    <td><a class="btn btn-success" asp-controller="categories" asp-action="edit" asp-route-id="">Edit</a></td>
+                    <td>@employee.EmpId</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.BirthDay</td>
+                    <td>@employee.Sex</td>
+                    <td>@employee.Salary</td>
+                    <td>@employee.SupervisorId</td>
+                    <td>@employee.BranchId</td>
+                    <td><a class="btn btn-success" asp-controller="employee" asp-action="edit" asp-route-id="@employee.EmpId">Edit</a></td>
                     <td>
                         <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-" data-store-id="" id="deleteUser">Delete</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@employee.EmpId" data-store-id="@employee.EmpId" id="deleteUser">Delete</button>
                         </div>
                     </td>
                 </tr>
