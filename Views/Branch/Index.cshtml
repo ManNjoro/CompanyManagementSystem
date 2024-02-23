@@ -1,0 +1,96 @@
+﻿@using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+@model List<Branch>
+@section title {
+    <div class="container mt-1 d-flex justify-content-between align-items-center">
+        <h3>Branches</h3>
+        <div class="">
+            <a class="btn btn-success" asp-controller="branch" asp-action="add">Add Branch</a>
+
+        </div>
+    </div>
+}
+
+@if (Model != null && Model.Count() == 0)
+{
+    <p>Oops! No branches to display</p>
+}
+
+
+
+@{
+    SPager pager = new SPager();
+    int pageNo = 0;
+    if (ViewBag.SearchPager != null)
+    {
+        pager = ViewBag.SearchPager;
+        pageNo = pager.CurrentPage;
+    }
+
+
+}
+
+@if (Model != null && Model.Count() > 0)
+{
+    @if (@TempData["AlertMessage"] != null)
+    {
+
+        <div class="alert alert-success alert-dismissible" role="alert">
+            @TempData["AlertMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Model)
+            {
+                <tr>
+                    <td>Name</td>
+                    <td>Description</td>
+                    <td><a class="btn btn-success" asp-controller="categories" asp-action="edit" asp-route-id="">Edit</a></td>
+                    <td>
+                        <div class="modal-btn">
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-" data-store-id="" id="deleteUser">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                <!--Delete Modal -->
+                <div class="modal fade" id="deleteUser-d" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <span>Once deleted, you will not be able to recover</span>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" asp-controller="categories" asp-action="delete" asp-route-categoryid="" id="confirm-delete-user">Ok</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </tbody>
+    </table>
+    <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
+
+}
+
+
+@section Scripts {
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    <script src="~/lib/custom/js/index.js"></script>
+}

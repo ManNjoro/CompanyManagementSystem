@@ -23,8 +23,10 @@ namespace CompanyManagementSystem.Models
 
         public int Salary { get; set; }
 
+        public virtual Employee Supervisor { get; set; }
+
         [MaxLength(255)]
-        [ForeignKey("Employee")]
+        [ForeignKey("Supervisor")]
         public string? SupervisorId { get; set; }
 
         [MaxLength(255)]
@@ -42,6 +44,10 @@ namespace CompanyManagementSystem.Models
 
         [NotMapped] // This property is not mapped to the database
         public List<SelectListItem> SexOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem> SupervisorOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem> BranchOptions { get; set; }
 
         public Employee()
         {

@@ -1,0 +1,55 @@
+﻿@model Branch
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="branch" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+
+        <input type="hidden" asp-for="BranchId" />
+    }
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="BranchName" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="BranchName" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="BranchName"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ManagerId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="ManagerId" class="form-control form-select" asp-items="@Model.EmployeeOptions">
+                <option disabled selected>-- Select Manager --</option>
+            </select>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ManagerStartDate" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="date" asp-for="ManagerStartDate" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="ManagerStartDate"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <button class="btn btn-primary">Save</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" asp-controller="branch" asp-action="index">Back To List</button>
+        </div>
+    </div>
+
+</form>

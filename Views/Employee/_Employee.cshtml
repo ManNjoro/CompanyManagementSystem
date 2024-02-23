@@ -3,7 +3,7 @@
     string action = ViewBag.Action ?? string.Empty;
 }
 
-<form method="post" asp-controller="categories" asp-action="@action">
+<form method="post" asp-controller="employee" asp-action="@action">
     @if (action?.ToLower() == "edit")
     {
 
@@ -74,7 +74,9 @@
             <label asp-for="SupervisorId" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" min="0" asp-for="SupervisorId" class="form-control" />
+            <select asp-for="SupervisorId" class="form-control form-select" asp-items="@Model.SupervisorOptions">
+                <option disabled selected>-- Select Supervisor --</option>
+            </select>
         </div>
     </div>
 
@@ -83,12 +85,12 @@
             <label asp-for="BranchId" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="number" min="0" asp-for="BranchId" class="form-control" />
-        </div>
-        <div class="col">
-            <span class="text-danger" asp-validation-for="BranchId"></span>
+            <select asp-for="BranchId" class="form-control form-select" asp-items="@Model.BranchOptions">
+                <option selected disabled>-- Select Branch --</option>
+            </select>
         </div>
     </div>
+
 
     <div class="row mb-3">
         <div class="col-2">

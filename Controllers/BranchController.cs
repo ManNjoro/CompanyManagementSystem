@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyManagementSystem.Controllers
 {
-    public class EmployeeController : Controller
+    public class BranchController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public EmployeeController(ApplicationDbContext db)
+        public BranchController(ApplicationDbContext db)
         {
-                _db = db;
+            _db = db;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -36,50 +36,37 @@ namespace CompanyManagementSystem.Controllers
 
         public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
         {
-            List<Employee> employees;
+            List<Branch> branches;
             if (SearchText != "" && SearchText != null)
             {
-                employees = _db.Employees
-                    .Where(cat => cat.FirstName.Contains(SearchText))
+                branches = _db.Branches
+                    .Where(cat => cat.BranchName.Contains(SearchText))
                     .ToList();
             }
             else
-                employees = _db.Employees.OrderByDescending(employee => employee.UpdatedAt).ToList();
+                branches = _db.Branches.OrderByDescending(branch => branch.UpdatedAt).ToList();
 
             if (pg < 1) pg = 1;
-            int recsCount = employees.Count();
+            int recsCount = branches.Count();
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
-            var data = employees.Skip(recSkip).Take(pager.PageSize).ToList();
+            var data = branches.Skip(recSkip).Take(pager.PageSize).ToList();
             SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "employee", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
         }
 
-        public IActionResult Add()
+        public IActionResult Add ()
         {
             ViewBag.Action = "Add";
-            var model = new Employee();
-            var supervisors = _db.Employees.ToList();
-            var branches = _db.Branches.ToList();
-
-            // Populate select options
-            model.SexOptions = new List<SelectListItem>
+            var model = new Branch();
+            var employees = _db.Employees.ToList();
+           
+            model.EmployeeOptions = employees.Select(e => new SelectListItem
             {
-                new SelectListItem { Value = "M", Text = "Male" },
-                new SelectListItem { Value = "F", Text = "Female" }
-            };
-            model.SupervisorOptions = supervisors.Select(s => new SelectListItem
-            {
-                Value = s.EmpId,
-                Text = $"{s.FirstName} {s.LastName}" // Assuming you have FirstName and LastName properties
-            }).ToList();
-
-            model.BranchOptions = branches.Select(b => new SelectListItem
-            {
-                Value = b.BranchId,
-                Text = b.BranchName
+                Value = e.EmpId,
+                Text = $"{e.FirstName} {e.LastName}"
             }).ToList();
 
             return View(model);

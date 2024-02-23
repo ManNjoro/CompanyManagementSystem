@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyManagementSystem.Models
 {
@@ -7,7 +8,7 @@ namespace CompanyManagementSystem.Models
     {
         [Key]
         [MaxLength(255)]
-        public string BranchId { get; set; }
+        public string BranchId { get; set; } = Guid.NewGuid().ToString();
 
         [MaxLength(40)]
         public string BranchName { get; set; }
@@ -25,6 +26,9 @@ namespace CompanyManagementSystem.Models
         public DateTime CreatedAt { get; set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime UpdatedAt { get; set; }
+
+        [NotMapped]
+        public List<SelectListItem> EmployeeOptions { get; set; }
 
         public Branch()
         {

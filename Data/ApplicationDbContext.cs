@@ -23,6 +23,10 @@ namespace CompanyManagementSystem.Data
 
             modelBuilder.Entity<WorksWith>()
                 .HasKey(w => new { w.EmpId, w.ClientId });
+            modelBuilder.Entity<Employee>()
+        .HasOne(e => e.Supervisor)
+        .WithMany()
+        .HasForeignKey(e => e.SupervisorId);
         }
     }
 }
