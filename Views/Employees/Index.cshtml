@@ -4,7 +4,7 @@
     <div class="container mt-1 d-flex justify-content-between align-items-center">
     <h3>Employees</h3>
         <div class="">
-                <a class="btn btn-success" asp-controller="employee" asp-action="add">Add Employee</a>
+                <a class="btn btn-success" asp-controller="employees" asp-action="add">Add Employee</a>
    
         </div>
     </div>
@@ -68,7 +68,7 @@
                     <td>@employee.Salary</td>
                     <td>@employee.SupervisorId</td>
                     <td>@employee.BranchId</td>
-                    <td><a class="btn btn-success" asp-controller="employee" asp-action="edit" asp-route-id="@employee.EmpId">Edit</a></td>
+                    <td><a class="btn btn-success" asp-controller="employees" asp-action="edit" asp-route-id="@employee.EmpId">Edit</a></td>
                     <td>
                         <div class="modal-btn">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@employee.EmpId" data-store-id="@employee.EmpId" id="deleteUser">Delete</button>

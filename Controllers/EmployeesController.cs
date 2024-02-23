@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyManagementSystem.Controllers
 {
-    public class EmployeeController : Controller
+    public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public EmployeeController(ApplicationDbContext db)
+        public EmployeesController(ApplicationDbContext db)
         {
                 _db = db;
         }
@@ -90,39 +90,16 @@ namespace CompanyManagementSystem.Controllers
         {
             if (employee == null)
             {
-                throw new ArgumentNullException(nameof(employee));
+                return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-
-                try
-                {
-                    _db.Employees.Add(employee);
-                    _db.SaveChanges();
-                    TempData["AlertMessage"] = "Employee Created Successfully...";
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception or handle it appropriately
-                    Console.WriteLine($"Error adding category: {ex.Message}");
-                    throw; // Re-throw the exception to propagate it up the call stack
-                }
+                _db.Employees.Add(employee);
+                _db.SaveChanges();
+                TempData["AlertMessage"] = "Employee Created Successfully...";
+                return RedirectToAction(nameof(Index));
             }
-
-            if (!ModelState.IsValid)
-            {
-                foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        Console.WriteLine($"Error: {error.ErrorMessage}");
-                    }
-                }
-                // Return the view with the model to display validation errors
-                return View(employee);
-            }
-
 
             return View(employee);
         }
