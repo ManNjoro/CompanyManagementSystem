@@ -151,5 +151,26 @@ namespace CompanyManagementSystem.Controllers
             // If ModelState is not valid, return the same view with validation errors
             return View(supplier);
         }
+
+        public IActionResult Delete(string branchId, string supplierName)
+        {
+            try
+            {
+                var record = _db.BranchesSupplier.Find(branchId, supplierName);
+                if (record != null)
+                {
+                    _db.BranchesSupplier.Remove(record);
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Supplier Deleted Successfully...";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it appropriately
+                Console.WriteLine($"Error deleting category: {ex.Message}");
+                throw; // Re-throw the exception to propagate it up the call stack
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

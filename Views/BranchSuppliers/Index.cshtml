@@ -61,12 +61,12 @@
                     <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
                     <td>
                         <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName" data-store-id="@supplier.BranchId-@supplier.SupplierName" id="deleteUser">Delete</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" data-store-id="@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" id="deleteUser">Delete</button>
                         </div>
                     </td>
                 </tr>
                 <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -78,7 +78,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="branchsuppliers" asp-action="delete" asp-route-supplierid="@supplier.BranchId-@supplier.SupplierName" id="confirm-delete-user">Ok</a>
+                                <a class="btn btn-primary" asp-controller="branchsuppliers" asp-action="delete" asp-route-branchId="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName" id="confirm-delete-user">Ok</a>
                             </div>
                         </div>
                     </div>
