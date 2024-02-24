@@ -1,5 +1,6 @@
 using CompanyManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connString, ServerVersion.AutoDetect(connString));
 });
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 var app = builder.Build();
