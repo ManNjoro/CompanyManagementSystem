@@ -112,7 +112,6 @@ namespace CompanyManagementSystem.Controllers
             {
                 Value = b.BranchId,
                 Text = b.BranchName,
-                Selected = b.BranchId == supplier.BranchId
             }).ToList();
 
             return View(supplier);
@@ -131,8 +130,6 @@ namespace CompanyManagementSystem.Controllers
             }
 
             // Update the properties of the retrieved employee with the values from the posted model
-            supplierToUpdate.BranchId = supplier.BranchId;
-            supplierToUpdate.SupplierName = supplier.SupplierName;
             supplierToUpdate.SupplyType = supplier.SupplyType;
 
             if (ModelState.IsValid)

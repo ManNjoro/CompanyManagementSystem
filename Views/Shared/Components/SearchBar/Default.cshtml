@@ -2,7 +2,7 @@
 @model SPager
 
 <div class="container btn-group">
-    <div class="col-4 p-0 justify-content-end">
+    <div class="col-4 p-0 justify-content-end mt-1">
         <form class="d-flex" asp-controller="@Model.Controller" asp-action="@Model.Action">
 
             <input class="form-control me-2" type="search" name="SearchText" value="@Model.SearchText" placeholder="Search..." aria-label="Search" />
@@ -11,7 +11,7 @@
         </form>
     </div>
 
-    <div class="container">
+    <div class="container mt-1">
         @if (Model.TotalPages > 0)
         {
             <ul class="pagination justify-content-end">

@@ -58,7 +58,7 @@
                     <td>@supplier.BranchId</td>
                     <td>@supplier.SupplierName</td>
                     <td>@supplier.SupplyType</td>
-                    <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId">Edit</a></td>
+                    <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
                     <td>
                         <div class="modal-btn">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId" data-store-id="@supplier.BranchId" id="deleteUser">Delete</button>
