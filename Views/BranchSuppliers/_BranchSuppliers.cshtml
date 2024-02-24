@@ -7,7 +7,11 @@
     @if (action?.ToLower() == "edit")
     {
 
-        <div class="row mb-3">
+        <input type="hidden" asp-for="BranchId" />
+        <input type="hidden" asp-for="SupplierName" />
+    }
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="row mb-3">
         <div class="col-2">
             <label asp-for="BranchId" class="col-form-label"></label>
         </div>
@@ -22,15 +26,12 @@
             <label asp-for="SupplierName" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="SupplierName" class="form-control" readonly />
+            <input type="text" asp-for="SupplierName" class="form-control" />
         </div>
         <div class="col">
             <span class="text-danger" asp-validation-for="SupplierName"></span>
         </div>
     </div>
-    }
-    <div class="text-danger" asp-validation-summary="All"></div>
-    
 
     <div class="row mb-3">
         <div class="col-2">

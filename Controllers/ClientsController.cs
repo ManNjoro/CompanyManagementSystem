@@ -1,15 +1,21 @@
-﻿using CompanyManagementSystem.Data;
-using CompanyManagementSystem.Models;
-using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using CompanyManagementSystem.Data;
+using CompanyManagementSystem.Models;
+using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 
 namespace CompanyManagementSystem.Controllers
 {
-    public class BranchController : Controller
+    public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public BranchController(ApplicationDbContext db)
+
+        public ClientsController(ApplicationDbContext db)
         {
             _db = db;
         }
@@ -36,106 +42,103 @@ namespace CompanyManagementSystem.Controllers
 
         public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
         {
-            List<Branch> branches;
+            List<Client> clients;
             if (SearchText != "" && SearchText != null)
             {
-                branches = _db.Branches
-                    .Where(cat => cat.BranchName.Contains(SearchText))
+                clients = _db.Clients
+                    .Where(cat => cat.ClientName.Contains(SearchText))
                     .ToList();
             }
             else
-                branches = _db.Branches.OrderByDescending(branch => branch.UpdatedAt).ToList();
+                clients = _db.Clients.OrderByDescending(client => client.UpdatedAt).ToList();
 
             if (pg < 1) pg = 1;
-            int recsCount = branches.Count();
+            int recsCount = clients.Count();
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
-            var data = branches.Skip(recSkip).Take(pager.PageSize).ToList();
-            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "branch", SearchText = SearchText };
+            var data = clients.Skip(recSkip).Take(pager.PageSize).ToList();
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "clients", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
         }
 
-        public IActionResult Add ()
+        public IActionResult Add()
         {
             ViewBag.Action = "Add";
-            var model = new Branch();
-            var employees = _db.Employees.ToList();
-           
-            model.EmployeeOptions = employees.Select(e => new SelectListItem
+            var model = new Client();
+            var branches = _db.Branches.ToList();
+            model.BranchOptions = branches.Select(b => new SelectListItem
             {
-                Value = e.EmpId,
-                Text = $"{e.FirstName} {e.LastName}"
+                Value = b.BranchId,
+                Text = b.BranchName
             }).ToList();
 
             return View(model);
         }
 
         [HttpPost]
-        public IActionResult Add(Branch branch)
+        public IActionResult Add(Client client)
         {
-            if (branch == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                _db.Branches.Add(branch);
+                _db.Clients.Add(client);
                 _db.SaveChanges();
-                TempData["AlertMessage"] = "Branch Created Successfully...";
+                TempData["AlertMessage"] = "Client Created Successfully...";
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(branch);
+            return View(client);
         }
 
         public IActionResult Edit(string id)
         {
             ViewBag.Action = "Edit";
-            var branch = _db.Branches.Find(id);
-            if (branch == null)
+            var client = _db.Clients.Find(id);
+            if (client == null)
             {
                 return NotFound();
             }
 
-
-            var employees = _db.Employees.ToList();
-
-            branch.EmployeeOptions = employees.Select(e => new SelectListItem
+            // Populate branch options
+            // Assuming you have a Branch model with appropriate properties
+            var branches = _db.Branches.ToList();
+            client.BranchOptions = branches.Select(b => new SelectListItem
             {
-                Value = e.EmpId,
-                Text = $"{e.FirstName} {e.LastName}"
+                Value = b.BranchId,
+                Text = b.BranchName,
             }).ToList();
 
-            return View(branch);
+            return View(client);
         }
 
-
         [HttpPost]
-        public IActionResult Edit(Branch branch)
+        public IActionResult Edit(Client client)
         {
             // Retrieve the employee to update from the database
-            var branchToUpdate = _db.Branches.Find(branch.BranchId);
+            var clientToUpdate = _db.Clients.Find(client.ClientId);
 
-            if (branchToUpdate == null)
+            if (clientToUpdate == null)
             {
                 // If the employee is not found, return a NotFoundResult or handle the case appropriately
                 return NotFound();
             }
 
             // Update the properties of the retrieved employee with the values from the posted model
-            branchToUpdate.BranchName = branch.BranchName;
-            branchToUpdate.ManagerId = branch.ManagerId;
-            branchToUpdate.ManagerStartDate = branch.ManagerStartDate;
+            clientToUpdate.ClientName = client.ClientName;
+            clientToUpdate.BranchId = client.BranchId;
 
             if (ModelState.IsValid)
             {
                 try
                 {
                     _db.SaveChanges();
-                    TempData["AlertMessage"] = "Branch Updated Successfully...";
+                    TempData["AlertMessage"] = "Client Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -147,19 +150,19 @@ namespace CompanyManagementSystem.Controllers
             }
 
             // If ModelState is not valid, return the same view with validation errors
-            return View(branch);
+            return View(client);
         }
 
-        public IActionResult Delete(string branchId)
+        public IActionResult Delete(string clientid)
         {
             try
             {
-                var branch = _db.Branches.Find(branchId);
-                if (branch != null)
+                var client = _db.Clients.Find(clientid);
+                if (client != null)
                 {
-                    _db.Branches.Remove(branch);
+                    _db.Clients.Remove(client);
                     _db.SaveChanges();
-                    TempData["AlertMessage"] = "Branch Deleted Successfully...";
+                    TempData["AlertMessage"] = "Client Deleted Successfully...";
                 }
             }
             catch (Exception ex)

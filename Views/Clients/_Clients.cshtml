@@ -1,0 +1,49 @@
+﻿@model Client
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="clients" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+
+        <input type="hidden" asp-for="ClientId" />
+    }
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ClientName" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="text" asp-for="ClientName" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="ClientName"></span>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="BranchId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="BranchId" class="form-control form-select" asp-items="@Model.BranchOptions">
+                <option disabled selected>-- Select Branch --</option>
+            </select>
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="BranchId"></span>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <button class="btn btn-primary">Save</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" asp-controller="clients" asp-action="index">Back To List</button>
+        </div>
+    </div>
+
+</form>
