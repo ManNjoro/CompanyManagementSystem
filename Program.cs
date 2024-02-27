@@ -1,6 +1,8 @@
 using CompanyManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using CompanyManagementSystem.Models;
+using CompanyManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +14,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(connString, ServerVersion.AutoDetect(connString));
 });
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddDefaultTokenProviders()
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddDefaultTokenProviders()
     .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+builder.Services.AddScoped<IFileService, FileService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
