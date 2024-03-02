@@ -175,31 +175,37 @@ namespace CompanyManagementSystem.Areas.Identity.Pages.Account
         private async Task<bool> SendEmailAsync(string email, string subject, string confirmLink)
         {
             System.Diagnostics.Debug.WriteLine("sending...");
+            _logger.LogInformation("sending...");
+            TempData["AlertMessage"] = "sending...";
             try
             {
 
-            MailMessage message = new MailMessage();
-            SmtpClient smtpClient = new SmtpClient();
-            message.From = new MailAddress("mifflindunder980@gmail.com");
-            message.To.Add(email);
-            message.Subject = subject;
-            message.IsBodyHtml = true;
-            message.Body = confirmLink;
+                MailMessage message = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient();
+                message.From = new MailAddress("mifflindunder980@gmail.com", "Dunder Mifflin");
+                message.To.Add(email);
+                message.Subject = subject;
+                message.IsBodyHtml = true;
+                message.Body = confirmLink;
 
-            smtpClient.Port = 587;
-            smtpClient.Host = "smtp.gmail.com";
+                smtpClient.Port = 587;
+                smtpClient.Host = "smtp.gmail.com";
 
-            smtpClient.EnableSsl = true;
-            smtpClient.UseDefaultCredentials = false;
-            smtpClient.Credentials = new NetworkCredential("mifflindunder980@gmail.com", "#Dundermifflin980");
-            smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-            smtpClient.Send(message);
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("mifflindunder980@gmail.com", "ignq lcbp nlex dtct");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(message);
                 System.Diagnostics.Debug.WriteLine("sent");
-            return true;
+                _logger.LogInformation("sent");
+                TempData["AlertMessage"] = "sent";
+                return true;
             }
             catch (Exception)
             {
                 System.Diagnostics.Debug.WriteLine("unsent");
+                _logger.LogInformation("unsent");
+                TempData["AlertMessage"] = "unsent";
                 return false;
             }
         }
