@@ -10,6 +10,11 @@ namespace CompanyManagementSystem.Models
         [MaxLength(255)]
         public string EmpId { get; set; } = Guid.NewGuid().ToString();
 
+        [ForeignKey("User")]
+        [Required]
+        public string UserId { get; set; } // Foreign key to AspNetUsers table
+        public virtual ApplicationUser? User { get; set; }
+
         [Required]
         [MaxLength(40)]
         public string FirstName { get; set; }
@@ -56,6 +61,8 @@ namespace CompanyManagementSystem.Models
         public List<SelectListItem>? SupervisorOptions { get; set; }
         [NotMapped]
         public List<SelectListItem>? BranchOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? UserOptions { get; set; }
 
         public Employee()
         {

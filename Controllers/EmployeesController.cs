@@ -1,6 +1,7 @@
 ﻿using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -9,9 +10,11 @@ namespace CompanyManagementSystem.Controllers
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public EmployeesController(ApplicationDbContext db)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
-                _db = db;
+            _db = db;
+            _userManager = userManager;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -63,6 +66,7 @@ namespace CompanyManagementSystem.Controllers
             var model = new Employee();
             var supervisors = _db.Employees.ToList();
             var branches = _db.Branches.ToList();
+            var users = _userManager.Users.ToList();
 
             // Populate select options
             model.SexOptions = new List<SelectListItem>
@@ -80,6 +84,12 @@ namespace CompanyManagementSystem.Controllers
             {
                 Value = b.BranchId,
                 Text = b.BranchName
+            }).ToList();
+
+            model.UserOptions = users.Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = $"{u.Firstname} {u.Lastname}"
             }).ToList();
 
             return View(model);
