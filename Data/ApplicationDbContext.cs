@@ -17,6 +17,7 @@ namespace CompanyManagementSystem.Data
         public DbSet<BranchSupplier> BranchesSupplier { get; set; }
         public DbSet<WorksWith> WorksWith { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Sale> Sales { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

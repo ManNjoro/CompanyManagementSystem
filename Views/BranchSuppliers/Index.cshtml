@@ -47,8 +47,12 @@
                 <th>Branch ID</th>
                 <th>Supplier Name</th>
                 <th>SupplyType</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    
                 <th></th>
                 <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -58,12 +62,16 @@
                     <td>@supplier.BranchId</td>
                     <td>@supplier.SupplierName</td>
                     <td>@supplier.SupplyType</td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        
                     <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
                     <td>
                         <div class="modal-btn">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" data-store-id="@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" id="deleteUser">Delete</button>
                         </div>
                     </td>
+                    }
                 </tr>
                 <!--Delete Modal -->
                 <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

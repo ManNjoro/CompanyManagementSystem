@@ -53,8 +53,12 @@
                 <th>Salary</th>
                 <th>Supervisor ID</th>
                 <th>Branch ID</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    
                 <th></th>
                 <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -70,12 +74,16 @@
                     <td>@employee.Salary</td>
                     <td>@employee.SupervisorId</td>
                     <td>@employee.BranchId</td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        
                     <td><a class="btn btn-success" asp-controller="employees" asp-action="edit" asp-route-id="@employee.EmpId">Edit</a></td>
                     <td>
                         <div class="modal-btn">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@employee.EmpId" data-store-id="@employee.EmpId" id="deleteUser">Delete</button>
                         </div>
                     </td>
+                    }
                 </tr>
                 <!--Delete Modal -->
                 <div class="modal fade" id="deleteUser-@employee.EmpId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

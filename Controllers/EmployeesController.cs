@@ -148,6 +148,13 @@ namespace CompanyManagementSystem.Controllers
                 Text = b.BranchName
             }).ToList();
 
+            var users = _userManager.Users.ToList();
+            employee.UserOptions = users.Select(u => new SelectListItem
+            {
+                Value = u.Id,
+                Text = $"{u.Firstname} {u.Lastname}"
+            }).ToList();
+
             return View(employee);
         }
 
@@ -172,6 +179,7 @@ namespace CompanyManagementSystem.Controllers
             employeeToUpdate.Salary = employee.Salary;
             employeeToUpdate.SupervisorId = employee.SupervisorId;
             employeeToUpdate.BranchId = employee.BranchId;
+            employeeToUpdate.UserId = employee.UserId;
             employeeToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
