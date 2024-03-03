@@ -162,6 +162,7 @@ namespace CompanyManagementSystem.Controllers
             employeeToUpdate.Salary = employee.Salary;
             employeeToUpdate.SupervisorId = employee.SupervisorId;
             employeeToUpdate.BranchId = employee.BranchId;
+            employeeToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
             {

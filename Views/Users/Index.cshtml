@@ -1,10 +1,10 @@
 ﻿@using CompanyManagementSystem.Views.Shared.Components.SearchBar;
-@model List<Branch>
+@model List<ApplicationUser>
 @section title {
     <div class="container mt-1 d-flex justify-content-between align-items-center">
-        <h3>Branches</h3>
+        <h3>Users</h3>
         <div class="">
-            <a class="btn btn-success" asp-controller="branch" asp-action="add">Add Branch</a>
+            <a class="btn btn-success" id="register" asp-area="Identity" asp-page="/Account/Register">New User</a>
 
         </div>
     </div>
@@ -12,7 +12,7 @@
 
 @if (Model != null && Model.Count() == 0)
 {
-    <p>Oops! No branches to display</p>
+    <p>Oops! No users to display</p>
 }
 
 
@@ -44,31 +44,31 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Branch ID</th>
-                <th>Branch Name</th>
-                <th>Manager ID</th>
-                <th>Manager StartDate</th>
+                <th>UserID</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
                 <th></th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var branch in Model)
+            @foreach (var user in Model)
             {
                 <tr>
-                    <td>@branch.BranchId</td>
-                    <td>@branch.BranchName</td>
-                    <td>@branch.ManagerId</td>
-                    <td>@branch.ManagerStartDate.ToString()</td>
-                    <td><a class="btn btn-success" asp-controller="branch" asp-action="edit" asp-route-id="@branch.BranchId">Edit</a></td>
+                    <td>@user.Id</td>
+                    <td>@user.Firstname</td>
+                    <td>@user.Lastname</td>
+                    <td>@user.Email</td>
+                    <td><a class="btn btn-success" asp-controller="Users" asp-action="edit" asp-route-id="@user.Id">Edit</a></td>
                     <td>
                         <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@branch.BranchId" data-store-id="@branch.BranchId" id="deleteUser">Delete</button>
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@user.Id" data-store-id="@user.Id" id="deleteUser">Delete</button>
                         </div>
                     </td>
                 </tr>
                 <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-@branch.BranchId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal fade" id="deleteUser-@user.Id" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -80,7 +80,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="branch" asp-action="delete" asp-route-branchid="@branch.BranchId" id="confirm-delete-user">Ok</a>
+                                <a class="btn btn-primary" asp-controller="Users" asp-action="delete" asp-route-employeeid="@user.Id" id="confirm-delete-user">Ok</a>
                             </div>
                         </div>
                     </div>
@@ -90,11 +90,4 @@
     </table>
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
 
-}
-
-
-@section Scripts {
-    <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/js/bootstrap.js"></script>
-    <script src="~/lib/custom/js/index.js"></script>
 }

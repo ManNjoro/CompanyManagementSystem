@@ -129,6 +129,7 @@ namespace CompanyManagementSystem.Controllers
             branchToUpdate.BranchName = branch.BranchName;
             branchToUpdate.ManagerId = branch.ManagerId;
             branchToUpdate.ManagerStartDate = branch.ManagerStartDate;
+            branchToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
             {

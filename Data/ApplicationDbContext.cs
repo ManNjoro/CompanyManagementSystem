@@ -55,6 +55,12 @@ namespace CompanyManagementSystem.Data
                 .WithMany(b => b.BranchSuppliers)
                 .HasForeignKey(bs => bs.BranchId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Branch>()
+                .HasOne(b => b.Manager)             // Branch has one Manager (Employee)
+                .WithOne()                         // Manager (Employee) can manage multiple Branches
+                .HasForeignKey<Branch>(b => b.ManagerId)    // Foreign key in Branch referencing Employee
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

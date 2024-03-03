@@ -14,15 +14,14 @@ namespace CompanyManagementSystem.Models
         [MaxLength(40)]
         public string BranchName { get; set; }
 
-        [Required]
         [MaxLength(255)]
-        [ForeignKey("Employee")]
-        public string ManagerId { get; set; }
+        public string? ManagerId { get; set; }
 
-        [Required]
         [DataType(DataType.Date)]
-        public DateTime ManagerStartDate { get; set; }
+        public DateTime? ManagerStartDate { get; set; }
 
+        [ForeignKey("ManagerId")]
+        public virtual Employee? Manager { get; set; }
         public ICollection<Employee>? Employees { get; set; }
         public ICollection<Client>? Clients { get; set; }
         public ICollection<BranchSupplier>? BranchSuppliers { get; set; }

@@ -131,6 +131,7 @@ namespace CompanyManagementSystem.Controllers
 
             // Update the properties of the retrieved employee with the values from the posted model
             supplierToUpdate.SupplyType = supplier.SupplyType;
+            supplierToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
             {

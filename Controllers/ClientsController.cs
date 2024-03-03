@@ -132,6 +132,7 @@ namespace CompanyManagementSystem.Controllers
             // Update the properties of the retrieved employee with the values from the posted model
             clientToUpdate.ClientName = client.ClientName;
             clientToUpdate.BranchId = client.BranchId;
+            clientToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
             {
