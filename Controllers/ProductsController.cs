@@ -8,15 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using CompanyManagementSystem.Services;
+using Microsoft.AspNetCore.Identity;
 
 namespace CompanyManagementSystem.Controllers
 {
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public ProductsController(ApplicationDbContext db)
+        private readonly IFileService _fileService;
+        public ProductsController(ApplicationDbContext db, IFileService fileService)
         {
             _db = db;
+            this._fileService = fileService;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -70,7 +74,7 @@ namespace CompanyManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Create(Product product, IFormFile imageFile)
         {
             if (product == null)
             {
@@ -79,6 +83,16 @@ namespace CompanyManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                if (imageFile != null)
+                {
+                    // Save the uploaded image and get the path
+                    var result = _fileService.SaveImage(imageFile);
+                    if (result.Item1 == 1)
+                    {
+                        var oldImage = product.ProductImage;
+                        product.ProductImage = result.Item2;
+                    }
+                }
                 _db.Products.Add(product);
                 _db.SaveChanges();
                 TempData["AlertMessage"] = "Product Created Successfully...";
@@ -102,7 +116,7 @@ namespace CompanyManagementSystem.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Product product)
+        public IActionResult Edit(Product product, IFormFile imageFile)
         {
             // Retrieve the employee to update from the database
             var productToUpdate = _db.Products.Find(product.ProductId);
@@ -116,8 +130,18 @@ namespace CompanyManagementSystem.Controllers
             // Update the properties of the retrieved employee with the values from the posted model
             productToUpdate.Name = product.Name;
             productToUpdate.Description = product.Description;
-            productToUpdate.ProductImage = product.ProductImage;
             product.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
+            if (imageFile != null)
+            {
+                // Save the uploaded image and update the product image path
+                var result = _fileService.SaveImage(imageFile);
+                if (result.Item1 == 1)
+                {
+                    var oldImage = product.ProductImage;
+                    product.ProductImage = result.Item2;
+                    var deleteResult = _fileService.DeleteImage(oldImage);
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -143,10 +167,10 @@ namespace CompanyManagementSystem.Controllers
         {
             try
             {
-                var product = _db.Branches.Find(productId);
+                var product = _db.Products.Find(productId);
                 if (product != null)
                 {
-                    _db.Branches.Remove(product);
+                    _db.Products.Remove(product);
                     _db.SaveChanges();
                     TempData["AlertMessage"] = "Product Deleted Successfully...";
                 }
