@@ -74,7 +74,7 @@ namespace CompanyManagementSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Product product, IFormFile imageFile)
+        public IActionResult Create(Product product, IFormFile? imageFile)
         {
             if (product == null)
             {
@@ -116,7 +116,7 @@ namespace CompanyManagementSystem.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Product product, IFormFile imageFile)
+        public IActionResult Edit(Product product, IFormFile? imageFile)
         {
             // Retrieve the employee to update from the database
             var productToUpdate = _db.Products.Find(product.ProductId);
@@ -130,15 +130,15 @@ namespace CompanyManagementSystem.Controllers
             // Update the properties of the retrieved employee with the values from the posted model
             productToUpdate.Name = product.Name;
             productToUpdate.Description = product.Description;
-            product.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
+            productToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
             if (imageFile != null)
             {
                 // Save the uploaded image and update the product image path
                 var result = _fileService.SaveImage(imageFile);
                 if (result.Item1 == 1)
                 {
-                    var oldImage = product.ProductImage;
-                    product.ProductImage = result.Item2;
+                    var oldImage = productToUpdate.ProductImage;
+                    productToUpdate.ProductImage = result.Item2;
                     var deleteResult = _fileService.DeleteImage(oldImage);
                 }
             }
