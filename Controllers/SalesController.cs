@@ -85,7 +85,7 @@ namespace CompanyManagementSystem.Controllers
 
             model.ProductOptions = products.Select(p => new SelectListItem
             {
-                Value = p.ProductId,
+                Value = p.Name,
                 Text = p.Name
             }).ToList();
 
@@ -137,7 +137,7 @@ namespace CompanyManagementSystem.Controllers
 
             model.ProductOptions = products.Select(p => new SelectListItem
             {
-                Value = p.ProductId,
+                Value = p.Name,
                 Text = p.Name
             }).ToList();
 

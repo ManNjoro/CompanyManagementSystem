@@ -1,0 +1,74 @@
+﻿@model Sale
+@{
+    string action = ViewBag.Action ?? string.Empty;
+}
+
+<form method="post" asp-controller="sales" asp-action="@action">
+    @if (action?.ToLower() == "edit")
+    {
+
+        <input type="hidden" asp-for="SaleId" />
+    }
+    <div class="text-danger" asp-validation-summary="All"></div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="EmpId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="EmpId" class="form-control form-select" asp-items="@Model.EmployeeOptions">
+                <option disabled selected>-- Select Employee --</option>
+            </select>
+            <div class="col">
+                <span class="text-danger" asp-validation-for="EmpId"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ClientId" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="ClientId" class="form-control form-select" asp-items="@Model.ClientOptions">
+                <option disabled selected>-- Select Client --</option>
+            </select>
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="ClientId"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="ProductType" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <select asp-for="ProductType" class="form-control form-select" asp-items="@Model.ProductOptions">
+                <option disabled selected>-- Select Product --</option>
+            </select>
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="ProductType"></span>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="Cost" class="col-form-label"></label>
+        </div>
+        <div class="col-6">
+            <input type="number" asp-for="Cost" min="0" class="form-control" />
+        </div>
+        <div class="col">
+            <span class="text-danger" asp-validation-for="Cost"></span>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <button class="btn btn-primary">Save</button>
+        </div>
+        <div class="col-6">
+            <button class="btn btn-success" asp-controller="sales" asp-action="index">Back To List</button>
+        </div>
+    </div>
+
+</form>
