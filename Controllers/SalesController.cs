@@ -7,164 +7,201 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
+using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using CompanyManagementSystem.Migrations;
 
 namespace CompanyManagementSystem.Controllers
 {
     public class SalesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _db;
 
-        public SalesController(ApplicationDbContext context)
+        public SalesController(ApplicationDbContext db)
         {
-            _context = context;
+            _db = db;
         }
 
-        // GET: Sales
-        public async Task<IActionResult> Index()
+        private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
         {
-            var applicationDbContext = _context.Sales.Include(s => s.Client).Include(s => s.Employee);
-            return View(await applicationDbContext.ToListAsync());
-        }
+            var pagesSizes = new List<SelectListItem>();
+            if (selectedPageSize == 5)
+                pagesSizes.Add(new SelectListItem("5", "5", true));
+            else
+                pagesSizes.Add(new SelectListItem("5", "5"));
 
-        // GET: Sales/Details/5
-        public async Task<IActionResult> Details(string id)
-        {
-            if (id == null)
+            for (int lp = 10; lp <= 100; lp += 10)
             {
-                return NotFound();
+                if (lp == selectedPageSize)
+                {
+                    pagesSizes.Add(new SelectListItem(lp.ToString(), lp.ToString(), true));
+                }
+                else
+                    pagesSizes.Add(new SelectListItem(lp.ToString(), lp.ToString()));
             }
-
-            var sale = await _context.Sales
-                .Include(s => s.Client)
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(m => m.SaleId == id);
-            if (sale == null)
-            {
-                return NotFound();
-            }
-
-            return View(sale);
+            return pagesSizes;
         }
 
-        // GET: Sales/Create
+        public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
+        {
+            List<Sale> sales;
+            if (SearchText != "" && SearchText != null)
+            {
+                sales = _db.Sales
+                    .Where(work => work.ClientId.Contains(SearchText))
+                    .ToList();
+            }
+            else
+                sales = _db.Sales.OrderByDescending(work => work.UpdatedAt).ToList();
+
+            if (pg < 1) pg = 1;
+            int recsCount = sales.Count();
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = sales.Skip(recSkip).Take(pager.PageSize).ToList();
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "branchsuppliers", SearchText = SearchText };
+            ViewBag.SearchPager = SearchPager;
+            this.ViewBag.PageSizes = GetPageSizes(pageSize);
+            return View(data);
+        }
+
         public IActionResult Create()
         {
-            ViewData["ClientId"] = new SelectList(_context.Clients, "ClientId", "ClientId");
-            ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId");
-            return View();
+            ViewBag.Action = "Create";
+            var model = new Sale();
+            var employees = _db.Employees.ToList();
+            var clients = _db.Clients.ToList();
+            var products = _db.Products.ToList();
+            model.EmployeeOptions = employees.Select(b => new SelectListItem
+            {
+                Value = b.EmpId,
+                Text = $"{b.FirstName} {b.LastName}"
+            }).ToList();
+
+            model.ClientOptions = clients.Select(c => new SelectListItem
+            {
+                Value = c.ClientId,
+                Text = c.ClientName
+            }).ToList();
+
+            model.ProductOptions = products.Select(p => new SelectListItem
+            {
+                Value = p.ProductId,
+                Text = p.Name
+            }).ToList();
+
+            return View(model);
         }
 
-        // POST: Sales/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SaleId,EmpId,ClientId,ProductType,Cost,CreatedAt,UpdatedAt")] Sale sale)
+        public IActionResult Create(Sale sale)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(sale);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "ClientId", "ClientId", sale.ClientId);
-            ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId", sale.EmpId);
-            return View(sale);
-        }
-
-        // GET: Sales/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var sale = await _context.Sales.FindAsync(id);
             if (sale == null)
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "ClientId", "ClientId", sale.ClientId);
-            ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId", sale.EmpId);
+
+            if (ModelState.IsValid)
+            {
+                _db.Sales.Add(sale);
+                _db.SaveChanges();
+                TempData["AlertMessage"] = "Sale Made Successfully...";
+                return RedirectToAction(nameof(Index));
+            }
+
             return View(sale);
         }
 
-        // POST: Sales/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("SaleId,EmpId,ClientId,ProductType,Cost,CreatedAt,UpdatedAt")] Sale sale)
+        public IActionResult Edit(string saleId)
         {
-            if (id != sale.SaleId)
+            ViewBag.Action = "Edit";
+            var model = _db.Sales.Find(saleId);
+            if (model == null)
             {
                 return NotFound();
             }
+
+            var employee = _db.Employees.ToList();
+            var clients = _db.Clients.ToList();
+            var products = _db.Products.ToList();
+            model.EmployeeOptions = employee.Select(b => new SelectListItem
+            {
+                Value = b.EmpId,
+                Text = $"{b.FirstName} {b.LastName}"
+            }).ToList();
+
+            model.ClientOptions = clients.Select(c => new SelectListItem
+            {
+                Value = c.ClientId,
+                Text = c.ClientName
+            }).ToList();
+
+            model.ProductOptions = products.Select(p => new SelectListItem
+            {
+                Value = p.ProductId,
+                Text = p.Name
+            }).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Sale sale)
+        {
+            // Retrieve the employee to update from the database
+            var modelToUpdate = _db.Sales.Find(sale.SaleId);
+
+            if (modelToUpdate == null)
+            {
+                // If the employee is not found, return a NotFoundResult or handle the case appropriately
+                return NotFound();
+            }
+
+            // Update the properties of the retrieved employee with the values from the posted model
+            modelToUpdate.EmpId = sale.EmpId;
+            modelToUpdate.ClientId = sale.ClientId;
+            modelToUpdate.Cost = sale.Cost;
+            modelToUpdate.ProductType = sale.ProductType;
+            modelToUpdate.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(sale);
-                    await _context.SaveChangesAsync();
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Sale Updated Successfully...";
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception ex)
                 {
-                    if (!SaleExists(sale.SaleId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    // Log the exception or handle it appropriately
+                    Console.WriteLine($"Error updating employee: {ex.Message}");
+                    throw; // Re-throw the exception to propagate it up the call stack
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "ClientId", "ClientId", sale.ClientId);
-            ViewData["EmpId"] = new SelectList(_context.Employees, "EmpId", "EmpId", sale.EmpId);
+
+            // If ModelState is not valid, return the same view with validation errors
             return View(sale);
         }
 
-        // GET: Sales/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public IActionResult Delete(string saleId)
         {
-            if (id == null)
+            try
             {
-                return NotFound();
+                var sale = _db.Sales.Find(saleId);
+                if (sale != null)
+                {
+                    _db.Sales.Remove(sale);
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Sale Deleted Successfully...";
+                }
             }
-
-            var sale = await _context.Sales
-                .Include(s => s.Client)
-                .Include(s => s.Employee)
-                .FirstOrDefaultAsync(m => m.SaleId == id);
-            if (sale == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Log the exception or handle it appropriately
+                Console.WriteLine($"Error deleting category: {ex.Message}");
+                throw; // Re-throw the exception to propagate it up the call stack
             }
-
-            return View(sale);
-        }
-
-        // POST: Sales/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var sale = await _context.Sales.FindAsync(id);
-            if (sale != null)
-            {
-                _context.Sales.Remove(sale);
-            }
-
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool SaleExists(string id)
-        {
-            return _context.Sales.Any(e => e.SaleId == id);
         }
     }
 }

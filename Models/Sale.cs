@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyManagementSystem.Models
 {
@@ -30,6 +31,12 @@ namespace CompanyManagementSystem.Models
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss zzz}", ConvertEmptyStringToNull = true, NullDisplayText = "")]
         public DateTime UpdatedAt { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? EmployeeOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? ClientOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? ProductOptions { get; set; }
 
         public Sale()
         {
