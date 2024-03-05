@@ -60,26 +60,3 @@
     </div>
 
 </form>
-<!-- Add this script section at the end of the Add.cshtml view -->
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('#EmpId, #ClientId').change(function () {
-                var empId = $('#EmpId').val();
-                var clientId = $('#ClientId').val();
-
-                $.ajax({
-                    url: '@Url.Action("GetTotalSales", "WorksWiths")',
-                    type: 'GET',
-                    data: { empId: empId, clientId: clientId },
-                    success: function (data) {
-                        $('#TotalSales').val(data); // Update TotalSales field with the returned value
-                    },
-                    error: function () {
-                        alert('Error occurred while retrieving total sales.');
-                    }
-                });
-            });
-        });
-    </script>
-}

@@ -150,6 +150,13 @@ namespace CompanyManagementSystem.Controllers
                 Value = c.ClientId,
                 Text = c.ClientName
             }).ToList();
+            // Calculate TotalSales based on selected Employee and Client
+            if (!string.IsNullOrEmpty(model.EmpId) && !string.IsNullOrEmpty(model.ClientId))
+            {
+                model.TotalSales = _db.Sales
+                    .Where(s => s.EmpId == model.EmpId && s.ClientId == model.ClientId)
+                    .Sum(s => s.Cost);
+            }
 
             return View(model);
         }

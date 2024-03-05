@@ -7,3 +7,28 @@ window.setTimeout(() => {
         $(this).remove();
     });
 }, 4000);
+
+$(document).ready(function () {
+    $('#EmpId, #ClientId').change(function () {
+        var empId = $('#EmpId').val();
+        console.log(empId);
+        var clientId = $('#ClientId').val();
+        console.log(clientId);
+        var url = '/WorksWiths/GetTotalSales';
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { empId: empId, clientId: clientId },
+            success: function (data) {
+                console.log("data:",data);
+                var totalSales = $('#TotalSales')
+                totalSales.val(data); // Update TotalSales field with the returned value
+                console.log(totalSales);
+            },
+            error: function () {
+                alert('Error occurred while retrieving total sales.');
+            }
+        });
+    });
+});
