@@ -21,7 +21,7 @@ namespace CompanyManagementSystem.Models
         public string ProductType { get; set; }
 
         [Required]
-        public decimal Cost { get; set; }
+        public double Cost { get; set; }
 
         public Employee? Employee { get; set; }
         public Client? Client { get; set; }

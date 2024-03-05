@@ -16,7 +16,7 @@
             <label asp-for="EmpId" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <select asp-for="EmpId" class="form-control form-select" asp-items="@Model.EmployeeOptions">
+            <select id="EmpId" asp-for="EmpId" class="form-control form-select" asp-items="@Model.EmployeeOptions">
                 <option disabled selected>-- Select Employee --</option>
             </select>
             <div class="col">
@@ -29,7 +29,7 @@
             <label asp-for="ClientId" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <select asp-for="ClientId" class="form-control form-select" asp-items="@Model.ClientOptions">
+            <select id="ClientId" asp-for="ClientId" class="form-control form-select" asp-items="@Model.ClientOptions">
                 <option disabled selected>-- Select Client --</option>
             </select>
         </div>
@@ -42,7 +42,7 @@
             <label asp-for="TotalSales" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="number" asp-for="TotalSales" class="form-control" />
+            <input type="text" id="TotalSales" asp-for="TotalSales" readonly class="form-control" />
         </div>
         <div class="col">
             <span class="text-danger" asp-validation-for="TotalSales"></span>
@@ -60,3 +60,26 @@
     </div>
 
 </form>
+<!-- Add this script section at the end of the Add.cshtml view -->
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#EmpId, #ClientId').change(function () {
+                var empId = $('#EmpId').val();
+                var clientId = $('#ClientId').val();
+
+                $.ajax({
+                    url: '@Url.Action("GetTotalSales", "WorksWiths")',
+                    type: 'GET',
+                    data: { empId: empId, clientId: clientId },
+                    success: function (data) {
+                        $('#TotalSales').val(data); // Update TotalSales field with the returned value
+                    },
+                    error: function () {
+                        alert('Error occurred while retrieving total sales.');
+                    }
+                });
+            });
+        });
+    </script>
+}

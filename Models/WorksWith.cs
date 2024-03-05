@@ -14,7 +14,7 @@ namespace CompanyManagementSystem.Models
         [ForeignKey("Client")]
         public string ClientId { get; set; }
 
-        public int TotalSales { get; set; }
+        public double TotalSales { get; set; }
 
         public Employee? Employee { get; set; }
         public Client? Client { get; set; }

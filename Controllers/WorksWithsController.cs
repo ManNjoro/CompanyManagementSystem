@@ -50,7 +50,20 @@ namespace CompanyManagementSystem.Controllers
                     .ToList();
             }
             else
-                worksWith = _db.WorksWith.OrderByDescending(work => work.UpdatedAt).ToList();
+                worksWith = _db.WorksWith
+                   .Include(w => w.Employee)
+                   .Include(w => w.Client)
+                   .OrderByDescending(w => w.UpdatedAt)
+                   .ToList();
+
+            // Calculate total sales for each WorksWith record
+            foreach (var work in worksWith)
+            {
+                work.TotalSales = _db.Sales
+                    .Where(s => s.EmpId == work.EmpId && s.ClientId == work.ClientId)
+                    .Sum(s => s.Cost);
+            }
+            /*worksWith = _db.WorksWith.OrderByDescending(work => work.UpdatedAt).ToList();*/
 
             if (pg < 1) pg = 1;
             int recsCount = worksWith.Count();
@@ -67,9 +80,10 @@ namespace CompanyManagementSystem.Controllers
         {
             ViewBag.Action = "Add";
             var model = new WorksWith();
-            var worksWiths = _db.Employees.ToList();
+           
+            var employees = _db.Employees.ToList();
             var clients = _db.Clients.ToList();
-            model.EmployeeOptions = worksWiths.Select(b => new SelectListItem
+            model.EmployeeOptions = employees.Select(b => new SelectListItem
             {
                 Value = b.EmpId,
                 Text = $"{b.FirstName} {b.LastName}"
@@ -80,6 +94,14 @@ namespace CompanyManagementSystem.Controllers
                 Value = c.ClientId,
                 Text = c.ClientName
             }).ToList();
+
+            // Calculate TotalSales based on selected Employee and Client
+            if (!string.IsNullOrEmpty(model.EmpId) && !string.IsNullOrEmpty(model.ClientId))
+            {
+                model.TotalSales = _db.Sales
+                    .Where(s => s.EmpId == model.EmpId && s.ClientId == model.ClientId)
+                    .Sum(s => s.Cost);
+            }
 
             return View(model);
         }
@@ -94,6 +116,9 @@ namespace CompanyManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                worksWith.TotalSales = _db.Sales
+                .Where(s => s.EmpId == worksWith.EmpId && s.ClientId == worksWith.ClientId)
+                .Sum(s => s.Cost);
                 _db.WorksWith.Add(worksWith);
                 _db.SaveChanges();
                 TempData["AlertMessage"] = "Record Created Successfully...";
@@ -185,5 +210,17 @@ namespace CompanyManagementSystem.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet]
+        public IActionResult GetTotalSales(string empId, string clientId)
+        {
+            // Calculate total sales based on empId and clientId
+            var totalSales = _db.Sales
+                .Where(s => s.EmpId == empId && s.ClientId == clientId)
+                .Sum(s => s.Cost);
+
+            return Json(totalSales); // Return total sales as JSON
+        }
+
     }
 }
