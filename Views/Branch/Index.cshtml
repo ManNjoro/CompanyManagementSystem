@@ -63,7 +63,7 @@
                     <td>@branch.BranchId</td>
                     <td>@branch.BranchName</td>
                     <td>@branch.ManagerId</td>
-                    <td>@branch.ManagerStartDate.ToString()</td>
+                    <td>@branch.ManagerStartDate?.ToString("dd/MM/yyyy")</td>
                     @if (User.IsInRole("Admin"))
                     {
                         

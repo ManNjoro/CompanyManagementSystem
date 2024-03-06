@@ -7,12 +7,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CompanyManagementSystem.styles.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CompanyManagementSystem</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/Dunder-Mifflin-logo.png" alt="DunderMifflin" width="90" height="50">
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,14 +25,20 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Home</a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Index">HomePage</a></li>
-                                <li><a class="dropdown-item" href="#service">Services</a></li>
-                                <li><a class="dropdown-item" href="#about">About Us</a></li>
-                                <li><a class="dropdown-item" href="#social">Contact Us</a></li>
+                                <li><a class="dropdown-item" href="/">HomePage</a></li>
+                                <li><a class="dropdown-item" href="/#service">Services</a></li>
+                                <li><a class="dropdown-item" href="/#about">About Us</a></li>
+                                <li><a class="dropdown-item" href="/#social">Contact Us</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="employees" asp-action="Index">Employee</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Staff</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="employees" asp-action="Index">Employee</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="clients" asp-action="Index">Client</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="sales" asp-action="Index">Sales</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="workswiths" asp-action="Index">WorksWith</a></li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="branch" asp-action="index">Branch</a>
@@ -37,7 +46,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="branchsuppliers" asp-action="index">Branch Supplier</a>
                         </li>
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="clients" asp-action="index">Client</a>
                         </li>
                         <li class="nav-item">
@@ -45,7 +54,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="sales" asp-action="index">Sales</a>
-                        </li>
+                        </li> *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="products" asp-action="index">Products</a>
                         </li>
