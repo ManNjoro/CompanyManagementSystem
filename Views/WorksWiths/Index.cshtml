@@ -48,7 +48,7 @@
                 <th>Client ID</th>
                 <th>Total Sales</th>
                 <th></th>
-                <th></th>
+                @* <th></th> *@
             </tr>
         </thead>
         <tbody>
@@ -58,7 +58,7 @@
                     <td>@record.EmpId</td>
                     <td>@record.ClientId</td>
                     <td>@record.TotalSales</td>
-                    <td><a class="btn btn-success" asp-controller="workswiths" asp-action="edit" asp-route-empId="@record.EmpId" asp-route-clientId="@record.ClientId">Edit</a></td>
+                   @*  <td><a class="btn btn-success" asp-controller="workswiths" asp-action="edit" asp-route-empId="@record.EmpId" asp-route-clientId="@record.ClientId">Edit</a></td> *@
                     <td>
                         <div class="modal-btn">
                             <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@record.EmpId-@record.ClientId" data-store-id="@record.EmpId-@record.ClientId" id="deleteUser">Delete</button>
