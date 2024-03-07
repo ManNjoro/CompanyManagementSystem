@@ -1,5 +1,13 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model ApplicationUser
+
+@section title {
+    @if (Model != null)
+    {
+        <h3>User: @Model.Id</h3>
+    }
+}
+
+@if (Model != null)
+{
+    <partial name="_Users" model="@Model" />
 }

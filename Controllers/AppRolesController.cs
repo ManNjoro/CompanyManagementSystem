@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanyManagementSystem.Controllers
 {
@@ -32,5 +33,31 @@ namespace CompanyManagementSystem.Controllers
             }
             return RedirectToAction("Index");
         }
+
+       
+        public async Task<IActionResult> Delete(string Id)
+        {
+            var role = await _roleManager.FindByIdAsync(Id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                TempData["AlertMessage"] = "Role deleted successfully.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            // If deletion fails, return to the index page or handle the error appropriately
+            return View("Index", await _roleManager.Roles.ToListAsync());
+        }
+
     }
 }

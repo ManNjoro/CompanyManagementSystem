@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
+using NuGet.Versioning;
 
 namespace CompanyManagementSystem.Controllers
 {
@@ -61,9 +63,92 @@ namespace CompanyManagementSystem.Controllers
             return View(data);
         }
 
-        public ActionResult Edit()
+        public async Task<IActionResult> Edit(string id)
         {
-            return View();
+            ViewBag.Action = "Edit";
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ApplicationUser model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Update user properties
+            user.Firstname = model.Firstname;
+            user.Lastname = model.Lastname;
+            user.Email = model.Email;
+            user.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Update other properties as needed
+
+                    var result = await _userManager.UpdateAsync(user);
+                    if (result.Succeeded)
+                    {
+                        TempData["AlertMessage"] = "User updated successfully.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["AlertMessage"] = $"An error occurred while updating user: {ex.Message}";
+                // Log the exception for further investigation
+                ModelState.AddModelError(string.Empty, "An error occurred while updating user.");
+            }
+            
+            return View(model);
+        }
+
+
+
+        // POST: /Users/Delete/{id}
+        public async Task<IActionResult> Delete(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["AlertMessage"] = "User Deleted Successfully...";
+                return RedirectToAction(nameof(Index));
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            // If deletion fails, return to the edit page or handle the error appropriately
+            return View("Edit", user);
         }
 
     }
