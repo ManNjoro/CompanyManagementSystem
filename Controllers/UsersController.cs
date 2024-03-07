@@ -14,10 +14,14 @@ namespace CompanyManagementSystem.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ApplicationDbContext _db;
 
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+            _db = db;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -70,45 +74,76 @@ namespace CompanyManagementSystem.Controllers
             {
                 return NotFound();
             }
+            UserRole userRole = new UserRole();
 
             var user = await _userManager.FindByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
+            var userInRole = _db.UserRoles.Where(x => x.UserId == id).Select(x => x.RoleId).ToList();
+            userRole.applicationUser = user;
+            userRole.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem 
+            { 
+                Text = r.Name, 
+                Value = r.Id,
+                Selected = userInRole.Contains(r.Id)
+            }).ToList();
+            
 
-            return View(user);
+            return View(userRole);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ApplicationUser model)
+        public async Task<IActionResult> Edit(UserRole model)
         {
-            var user = await _userManager.FindByIdAsync(model.Id);
+            var user = await _userManager.FindByIdAsync(model.applicationUser.Id);
             if (user == null)
             {
                 return NotFound();
             }
 
+
             // Update user properties
-            user.Firstname = model.Firstname;
-            user.Lastname = model.Lastname;
-            user.Email = model.Email;
+            user.Firstname = model.applicationUser.Firstname;
+            user.Lastname = model.applicationUser.Lastname;
+            user.Email = model.applicationUser.Email;
             user.UpdatedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. Africa Standard Time"));
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    // Update other properties as needed
 
-                    var result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
+                    // Update user role
+                    var selectedRoleId = model.SelectedRole;
+                    var role = await _roleManager.FindByIdAsync(selectedRoleId);
+                    if (role != null)
+                    {
+                        // Clear existing roles
+                        var currentRoles = await _userManager.GetRolesAsync(user);
+                        await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+                        // Add new role
+                        var result = await _userManager.AddToRoleAsync(user, role.Name);
+                        if (!result.Succeeded)
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                            return View(model);
+                        }
+                    }
+
+                    var updateResult = await _userManager.UpdateAsync(user);
+                    if (updateResult.Succeeded)
                     {
                         TempData["AlertMessage"] = "User updated successfully.";
                         return RedirectToAction(nameof(Index));
                     }
 
-                    foreach (var error in result.Errors)
+                    foreach (var error in updateResult.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
@@ -120,9 +155,22 @@ namespace CompanyManagementSystem.Controllers
                 // Log the exception for further investigation
                 ModelState.AddModelError(string.Empty, "An error occurred while updating user.");
             }
-            
+
+            // Repopulate the roles dropdown if there are validation errors
+            if (!ModelState.IsValid)
+            {
+                var userInRole = _db.UserRoles.Where(x => x.UserId == model.applicationUser.Id).Select(x => x.RoleId).ToList();
+                model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+                {
+                    Text = r.Name,
+                    Value = r.Id,
+                    Selected = userInRole.Contains(r.Id)
+                }).ToList();
+            }
+
             return View(model);
         }
+
 
 
 

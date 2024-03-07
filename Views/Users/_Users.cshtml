@@ -1,4 +1,4 @@
-﻿@model ApplicationUser
+﻿@model CompanyManagementSystem.Models.UserRole
 @{
     string action = ViewBag.Action ?? string.Empty;
 }
@@ -7,36 +7,48 @@
     @if (action?.ToLower() == "edit")
     {
 
-        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="@Model.applicationUser.Id" />
     }
     <div class="text-danger" asp-validation-summary="All"></div>
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="Firstname" class="col-form-label"></label>
+            <label asp-for="@Model.applicationUser.Firstname" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="Firstname" class="form-control" />
+            <input type="text" asp-for="@Model.applicationUser.Firstname" class="form-control" />
         </div>
         <div class="col">
-            <span class="text-danger" asp-validation-for="Firstname"></span>
+            <span class="text-danger" asp-validation-for="@Model.applicationUser.Firstname"></span>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="Lastname" class="col-form-label"></label>
+            <label asp-for="@Model.applicationUser.Lastname" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="Lastname" class="form-control" />
+            <input type="text" asp-for="@Model.applicationUser.Lastname" class="form-control" />
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-2">
-            <label asp-for="Email" class="col-form-label"></label>
+            <label asp-for="@Model.applicationUser.Email" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="email" asp-for="Email" class="form-control" />
+            <input type="email" asp-for="@Model.applicationUser.Email" class="form-control" />
         </div>
     </div>
+
+    <div class="row mb-3">
+        <div class="col-2">
+            <label asp-for="SelectedRole" class="col-form-label">Role</label>
+        </div>
+        <div class="col-6">
+            <select asp-for="SelectedRole" asp-items="@Model.ApplicationRoles" class="form-control form-select">
+                <option disabled selected>--Select Role--</option>
+            </select>
+        </div>
+    </div>
+
     <div class="row mb-3">
         <div class="col-2">
             <button class="btn btn-primary">Save</button>
