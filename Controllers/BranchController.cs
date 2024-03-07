@@ -1,11 +1,13 @@
 ﻿using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace CompanyManagementSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class BranchController : Controller
     {
         private readonly ApplicationDbContext _db;

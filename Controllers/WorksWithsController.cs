@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyManagementSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class WorksWithsController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -128,6 +130,7 @@ namespace CompanyManagementSystem.Controllers
             return View(worksWith);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(string empId, string clientId)
         {
             ViewBag.Action = "Edit";
@@ -161,6 +164,7 @@ namespace CompanyManagementSystem.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Edit(WorksWith worksWith)
         {

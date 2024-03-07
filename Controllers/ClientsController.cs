@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyManagementSystem.Controllers
 {
+    [Authorize(Roles = "Admin, Employee")]
     public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _db;
