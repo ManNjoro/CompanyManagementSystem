@@ -151,3 +151,26 @@ body {
         width: 33%;
     }
 }
+
+/* Dashboard */
+.count-container {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    text-align: center;
+}
+
+.count-container li {
+    background-color: #3498db;
+    padding: 50px 0;
+    border-radius: 10px !important;
+    font-weight: bold;
+}
+
+/* Media query for small screens */
+@media screen and (max-width: 768px) {
+    .count-container {
+        grid-template-columns: 1fr 1fr; /* 2 columns for small screens */
+    }
+}

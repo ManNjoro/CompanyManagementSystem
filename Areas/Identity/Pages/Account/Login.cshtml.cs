@@ -20,13 +20,15 @@ namespace CompanyManagementSystem.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, UserManager<ApplicationUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -116,7 +118,18 @@ namespace CompanyManagementSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+                    // Get the user
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
+                    // Check if the user is in the Admin role
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Index", "Dashboard"); // Redirect admin to dashboard
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home"); // Redirect employee to homepage
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

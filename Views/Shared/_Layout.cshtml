@@ -22,15 +22,25 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between" id="navbarScroll">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Home</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/">HomePage</a></li>
-                                <li><a class="dropdown-item" href="/#service">Services</a></li>
-                                <li><a class="dropdown-item" href="/#about">About Us</a></li>
-                                <li><a class="dropdown-item" href="/#social">Contact Us</a></li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="dashboard" asp-action="index">Dashboard</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Home</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="/">HomePage</a></li>
+                                    <li><a class="dropdown-item" href="/#service">Services</a></li>
+                                    <li><a class="dropdown-item" href="/#about">About Us</a></li>
+                                    <li><a class="dropdown-item" href="/#social">Contact Us</a></li>
+                                </ul>
+                            </li>
+                        }
+                        
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Staff</a>
                             <ul class="dropdown-menu">
@@ -86,11 +96,6 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
-     crossorigin="anonymous">
-    </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

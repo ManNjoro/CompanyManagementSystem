@@ -1,9 +1,11 @@
 using CompanyManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace CompanyManagementSystem.Controllers
 {
+    [Authorize(Roles = "Employee")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

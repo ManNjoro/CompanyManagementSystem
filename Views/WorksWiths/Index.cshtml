@@ -41,7 +41,8 @@
     }
 
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
-    <table class="table table-striped">
+    <div class="table-responsive">
+        <table class="table table-striped">
         <thead>
             <tr>
                 <th>Employee ID</th>
@@ -86,6 +87,7 @@
             }
         </tbody>
     </table>
+    </div>
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
 
 }

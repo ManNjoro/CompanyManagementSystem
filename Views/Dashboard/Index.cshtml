@@ -1,0 +1,15 @@
+﻿@section title {
+    <div class="container mt-1 d-flex justify-content-between align-items-center">
+        <h3>Dashboard</h3>
+    </div>
+}
+
+<div>
+    <h2>Item Counts</h2>
+    <ul class="count-container">
+        @foreach (var itemCount in ViewBag.ItemCounts)
+        {
+            <li>@itemCount.Key: @itemCount.Value</li>
+        }
+    </ul>
+</div>

@@ -1,24 +1,20 @@
 ﻿@using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 @model SPager
 
-<div class="container m-0 p-0 btn-group" style="background-color:lightgray;border-radius:25px;height:45px;">
+<div class="container-fluid mt-2 p-1 btn-group" style="background-color: lightgray; border-radius: 25px; height: 50px; overflow-y: auto;">
 
-    <div class="col-4 btn-group p-1 m-1">
-        Showing @Model.StartRecord to @Model.EndRecord of @Model.TotalItems @(Model.TotalItems == 1 ? "Row" : "Rows")
+    <div class="col-md-4 col-sm-12 btn-group p-1 m-1 d-flex align-items-center">
+        <span class="mr-0">Showing @Model.StartRecord to @Model.EndRecord of @Model.TotalItems @(Model.TotalItems == 1 ? "Row" : "Rows")</span>
     </div>
 
-    <div class="col-3 btn-group justify-content-end">
-        <span class="col-7 mt-2 p-0">
-            Rows Per Page
-        </span>
-        <span class="col-5 p-1">
-            <select class="form-control form-select" id="pageSelector" asp-items="@ViewBag.PageSizes"
-                    onchange="ChangePageSize(this, '@Model.SearchText');"></select>
-        </span>
+    <div class="col-md-3 col-sm-12 btn-group justify-content-center align-items-center">
+        <span class="mr-2">Rows Per Page</span>
+        <select class="form-control form-select" id="pageSelector" asp-items="@ViewBag.PageSizes"
+                onchange="ChangePageSize(this, '@Model.SearchText');"></select>
     </div>
 
-    <div class="col-5 btn-group justify-content-end p-1 m-1">
-        Showing @Model.CurrentPage / @Model.TotalPages Pages
+    <div class="col-md-4 col-sm-12 btn-group justify-content-end p-1 m-1">
+        <span class="mr-2">Showing @Model.CurrentPage / @Model.TotalPages Pages</span>
     </div>
 </div>
 

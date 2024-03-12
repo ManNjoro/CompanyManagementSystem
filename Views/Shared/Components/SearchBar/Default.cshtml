@@ -1,47 +1,46 @@
 ﻿@using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 @model SPager
 
-<div class="container btn-group">
-    <div class="col-4 p-0 justify-content-end mt-1">
-        <form class="d-flex" asp-controller="@Model.Controller" asp-action="@Model.Action">
-
-            <input class="form-control me-2" type="search" name="SearchText" value="@Model.SearchText" placeholder="Search..." aria-label="Search" />
-            <button class="btn btn-outline-success">Search</button>
-
-        </form>
-    </div>
-
-    <div class="container mt-1">
-        @if (Model.TotalPages > 0)
-        {
-            <ul class="pagination justify-content-end">
-
-                @if (Model.CurrentPage > 1)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="1">First</a>
-                    </li>
-                    <li>
-                        <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
-                    </li>
-                }
-                @for (var pge = Model.StartPage; pge <= Model.EndPage; pge++)
-                {
-                    <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@pge">@pge</a>
-                    </li>
-                }
-
-                @if (Model.CurrentPage < Model.TotalPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
-                    </li>
-                    <li>
-                        <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@(Model.TotalPages)">Last</a>
-                    </li>
-                }
-            </ul>
-        }
+<div class="container mt-3">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-12 col-md-6">
+            <form class="d-flex mb-2" asp-controller="@Model.Controller" asp-action="@Model.Action">
+                <input class="form-control me-2" type="search" name="SearchText" value="@Model.SearchText" placeholder="Search..." aria-label="Search" />
+                <button class="btn btn-outline-success">Search</button>
+            </form>
+        </div>
+        <div class="col-auto">
+            @if (Model.TotalPages > 0)
+            {
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        @if (Model.CurrentPage > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="1">First</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@(Model.CurrentPage - 1)">Previous</a>
+                            </li>
+                        }
+                        @for (var pge = Model.StartPage; pge <= Model.EndPage; pge++)
+                        {
+                            <li class="page-item @(pge == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@pge">@pge</a>
+                            </li>
+                        }
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@(Model.CurrentPage + 1)">Next</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" asp-controller="@Model.Controller" asp-action="@Model.Action" asp-route-pg="@Model.TotalPages">Last</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            }
+        </div>
     </div>
 </div>

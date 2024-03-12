@@ -41,61 +41,63 @@
     }
 
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Branch ID</th>
-                <th>Branch Name</th>
-                <th>Manager ID</th>
-                <th>Manager StartDate</th>
-                @if (User.IsInRole("Admin"))
-                {
-                    
-                <th></th>
-                <th></th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var branch in Model)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@branch.BranchId</td>
-                    <td>@branch.BranchName</td>
-                    <td>@branch.ManagerId</td>
-                    <td>@branch.ManagerStartDate?.ToString("dd/MM/yyyy")</td>
+                    <th>Branch ID</th>
+                    <th>Branch Name</th>
+                    <th>Manager ID</th>
+                    <th>Manager StartDate</th>
                     @if (User.IsInRole("Admin"))
                     {
-                        
-                    <td><a class="btn btn-success" asp-controller="branch" asp-action="edit" asp-route-id="@branch.BranchId">Edit</a></td>
-                    <td>
-                        <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@branch.BranchId" data-store-id="@branch.BranchId" id="deleteUser">Delete</button>
-                        </div>
-                    </td>
+                    
+                    <th></th>
+                    <th></th>
                     }
                 </tr>
-                <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-@branch.BranchId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </thead>
+            <tbody>
+                @foreach (var branch in Model)
+                {
+                    <tr>
+                        <td>@branch.BranchId</td>
+                        <td>@branch.BranchName</td>
+                        <td>@branch.ManagerId</td>
+                        <td>@branch.ManagerStartDate?.ToString("dd/MM/yyyy")</td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                        
+                        <td><a class="btn btn-success" asp-controller="branch" asp-action="edit" asp-route-id="@branch.BranchId">Edit</a></td>
+                        <td>
+                            <div class="modal-btn">
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@branch.BranchId" data-store-id="@branch.BranchId" id="deleteUser">Delete</button>
                             </div>
-                            <div class="modal-body">
-                                <span>Once deleted, you will not be able to recover</span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="branch" asp-action="delete" asp-route-branchid="@branch.BranchId" id="confirm-delete-user">Ok</a>
+                        </td>
+                        }
+                    </tr>
+                    <!--Delete Modal -->
+                    <div class="modal fade" id="deleteUser-@branch.BranchId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <span>Once deleted, you will not be able to recover</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" asp-controller="branch" asp-action="delete" asp-route-branchid="@branch.BranchId" id="confirm-delete-user">Ok</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
 
 }

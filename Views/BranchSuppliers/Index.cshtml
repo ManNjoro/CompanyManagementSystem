@@ -41,59 +41,61 @@
     }
 
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Branch ID</th>
-                <th>Supplier Name</th>
-                <th>SupplyType</th>
-                @if (User.IsInRole("Admin"))
-                {
-                    
-                <th></th>
-                <th></th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var supplier in Model)
-            {
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@supplier.BranchId</td>
-                    <td>@supplier.SupplierName</td>
-                    <td>@supplier.SupplyType</td>
+                    <th>Branch ID</th>
+                    <th>Supplier Name</th>
+                    <th>SupplyType</th>
                     @if (User.IsInRole("Admin"))
                     {
-                        
-                    <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
-                    <td>
-                        <div class="modal-btn">
-                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" data-store-id="@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" id="deleteUser">Delete</button>
-                        </div>
-                    </td>
+                    
+                    <th></th>
+                    <th></th>
                     }
                 </tr>
-                <!--Delete Modal -->
-                <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </thead>
+            <tbody>
+                @foreach (var supplier in Model)
+                {
+                    <tr>
+                        <td>@supplier.BranchId</td>
+                        <td>@supplier.SupplierName</td>
+                        <td>@supplier.SupplyType</td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                        
+                        <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
+                        <td>
+                            <div class="modal-btn">
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" data-store-id="@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" id="deleteUser">Delete</button>
                             </div>
-                            <div class="modal-body">
-                                <span>Once deleted, you will not be able to recover</span>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <a class="btn btn-primary" asp-controller="branchsuppliers" asp-action="delete" asp-route-branchId="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName" id="confirm-delete-user">Ok</a>
+                        </td>
+                        }
+                    </tr>
+                    <!--Delete Modal -->
+                    <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <span>Once deleted, you will not be able to recover</span>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <a class="btn btn-primary" asp-controller="branchsuppliers" asp-action="delete" asp-route-branchId="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName" id="confirm-delete-user">Ok</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </tbody>
-    </table>
+                }
+            </tbody>
+        </table>
+    </div>
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
 
 }
