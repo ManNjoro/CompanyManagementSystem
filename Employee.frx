@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="03/14/2024 13:27:37" ReportInfo.Modified="03/14/2024 15:01:51" ReportInfo.CreatorVersion="2022.2.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="Employee" DataType="null" Enabled="true">
+      <Column Name="EmpId" DataType="System.String"/>
+      <Column Name="UserId" DataType="System.String"/>
+      <Column Name="FirstName" DataType="System.String"/>
+      <Column Name="LastName" DataType="System.String"/>
+      <Column Name="BirthDay" DataType="System.DateTime"/>
+      <Column Name="Sex" DataType="System.String"/>
+      <Column Name="Salary" DataType="System.Int32"/>
+      <Column Name="SupervisorId" DataType="System.String"/>
+      <Column Name="BranchId" DataType="System.String"/>
+      <Column Name="CreatedAt" DataType="System.String"/>
+      <Column Name="UpdatedAt" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="param1" DataType="System.String"/>
+    <Parameter Name="param2" DataType="System.String"/>
+  </Dictionary>
+  <ReportPage Name="Page1" Guides="708.75" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="132.3">
+      <TextObject Name="Text1" Left="274.05" Top="9.45" Width="122.85" Height="18.9" Text="Employee Report" Font="Arial, 10pt, style=Bold"/>
+      <TextObject Name="Text22" Top="66.15" Width="708.75" Height="18.9" Text="[param1]" Font="Arial, 10pt"/>
+      <TextObject Name="Text23" Top="103.95" Width="708.75" Height="18.9" Text="[param2]" Font="Arial, 10pt"/>
+      <TextObject Name="Text24" Left="529.2" Top="9.45" Width="141.75" Height="18.9" Text="[Date]" Font="Arial, 10pt"/>
+    </ReportTitleBand>
+    <PageHeaderBand Name="PageHeader1" Top="136.3" Width="718.2" Height="47.25">
+      <TextObject Name="Text3" Width="56.7" Height="18.9" Text="EmpId" Font="Arial, 10pt"/>
+      <TextObject Name="Text5" Left="66.15" Width="56.7" Height="18.9" Text="UserId" Font="Arial, 10pt"/>
+      <TextObject Name="Text7" Left="132.3" Width="75.6" Height="18.9" Text="FirstName" Font="Arial, 10pt"/>
+      <TextObject Name="Text10" Left="302.4" Width="66.15" Height="18.9" Text="BirthDay" Font="Arial, 10pt"/>
+      <TextObject Name="Text8" Left="217.35" Width="75.6" Height="18.9" Text="LastName" Font="Arial, 10pt"/>
+      <TextObject Name="Text13" Left="378" Width="47.25" Height="18.9" Text="Sex" Font="Arial, 10pt"/>
+      <TextObject Name="Text15" Left="434.7" Width="56.7" Height="18.9" Text="Salary" Font="Arial, 10pt"/>
+      <TextObject Name="Text17" Left="500.85" Width="66.15" Height="18.9" Text="SupervisorId" Font="Arial, 10pt"/>
+      <TextObject Name="Text19" Left="576.45" Width="66.15" Height="18.9" Text="BranchId" Font="Arial, 10pt"/>
+      <TextObject Name="Text21" Left="652.05" Width="75.6" Height="18.9" IsIntersectedWithOtherObject="true" Text="UpdatedAt" Font="Arial, 10pt"/>
+    </PageHeaderBand>
+    <DataBand Name="Data1" Top="187.55" Width="718.2" Height="75.6" DataSource="Employee">
+      <TextObject Name="Text2" Left="-18.9" Width="75.6" Height="18.9" IsIntersectedWithOtherObject="true" Text="[Employee.EmpId]" Font="Arial, 10pt"/>
+      <TextObject Name="Text4" Left="66.15" Width="56.7" Height="18.9" Text="[Employee.UserId]" Font="Arial, 10pt"/>
+      <TextObject Name="Text6" Left="132.3" Width="75.6" Height="18.9" Text="[Employee.FirstName]" Font="Arial, 10pt"/>
+      <TextObject Name="Text9" Left="302.4" Width="66.15" Height="18.9" Text="[Employee.BirthDay]" Format="Date" Format.Format="d" Font="Arial, 10pt"/>
+      <TextObject Name="Text11" Left="217.35" Width="75.6" Height="18.9" Text="[Employee.LastName]" Font="Arial, 10pt"/>
+      <TextObject Name="Text12" Left="378" Width="47.25" Height="18.9" Text="[Employee.Sex]" Font="Arial, 10pt"/>
+      <TextObject Name="Text14" Left="434.7" Width="56.7" Height="18.9" Text="[Employee.Salary]" Font="Arial, 10pt"/>
+      <TextObject Name="Text16" Left="500.85" Width="56.7" Height="18.9" Text="[Employee.SupervisorId]" Font="Arial, 10pt"/>
+      <TextObject Name="Text18" Left="576.45" Width="66.15" Height="18.9" Text="[Employee.BranchId]" Font="Arial, 10pt"/>
+      <TextObject Name="Text20" Left="661.5" Width="66.15" Height="18.9" IsIntersectedWithOtherObject="true" Text="[Employee.UpdatedAt]" Font="Arial, 10pt"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="267.15" Width="718.2" Height="75.6">
+      <TextObject Name="Text25" Left="652.05" Top="37.8" Width="56.7" Height="18.9" Text="[Page]" Font="Arial, 10pt"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>

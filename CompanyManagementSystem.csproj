@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Employee.frx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
+    <PackageReference Include="FastReport.OpenSource" Version="2024.1.7" />
+    <PackageReference Include="FastReport.OpenSource.Export.PdfSimple" Version="2024.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.9.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.3" />
@@ -20,13 +27,15 @@
     <PackageReference Include="Microsoft.ReportingServices.ReportViewerControl.WebForms" Version="150.1620.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.1" />
-    <PackageReference Include="System.CodeDom" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Reports\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Employee.frx" />
   </ItemGroup>
 
 </Project>

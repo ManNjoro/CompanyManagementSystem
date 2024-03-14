@@ -1,6 +1,7 @@
 ﻿using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
+using FastReport;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace CompanyManagementSystem.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
-        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
             _userManager = userManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -223,6 +226,36 @@ namespace CompanyManagementSystem.Controllers
                 throw; // Re-throw the exception to propagate it up the call stack
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public FileResult Generate()
+        {
+            FastReport.Utils.Config.WebMode = true;
+            Report rep = new Report();
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "Employee.frx");
+            rep.Load(path);
+
+            // Add your report generation logic here
+            var employees = _db.Employees.ToList();
+            rep.RegisterData(employees, "EmployeeRef");
+
+            if (rep.Report.Prepare())
+            {
+                FastReport.Export.PdfSimple.PDFSimpleExport pdfExport = new FastReport.Export.PdfSimple.PDFSimpleExport();
+                pdfExport.ShowProgress = false;
+                pdfExport.Subject = "Subject Report";
+                pdfExport.Title = "Employee Report";
+                System.IO.MemoryStream ms = new System.IO.MemoryStream();
+                rep.Report.Export(pdfExport, ms);
+                rep.Dispose();
+                pdfExport.Dispose();
+                ms.Position = 0;
+                return File(ms, "application/pdf", "EmployeeReport.pdf");
+            }
+            else
+            {
+                return null;
+            }
         }
 
     }

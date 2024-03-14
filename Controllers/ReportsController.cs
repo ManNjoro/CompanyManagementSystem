@@ -1,4 +1,5 @@
 ﻿using AspNetCore.Reporting;
+using FastReport;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyManagementSystem.Controllers
@@ -6,6 +7,7 @@ namespace CompanyManagementSystem.Controllers
     public class ReportsController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public ReportsController(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
@@ -15,17 +17,17 @@ namespace CompanyManagementSystem.Controllers
             return View();
         }
 
-        public IActionResult Print()
+        public FileResult Generate()
         {
-            /*string mimtype = "";
-            int extension = 1;
-            var path = $"{_webHostEnvironment.WebRootPath}\\Reports\\Report1.rdlc";
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("rp1", "Welcome to Dunder Mifflin");
-            LocalReport localReport = new LocalReport(path);
-            var result = localReport.Execute(RenderType.Pdf, extension, parameters, mimtype);
-            return File(result.MainStream, "application/pdf");*/
-            return View();
+            FastReport.Utils.Config.WebMode = true;
+            Report rep = new Report();
+            string path = Path.Combine(_webHostEnvironment.WebRootPath, "Employee.frx");
+            rep.Load(path);
+
+            // Add your report generation logic here
+
+            // Return the generated report file
+            return File(/* Your report file bytes here */ "application/pdf", "report.pdf");
         }
     }
 }
