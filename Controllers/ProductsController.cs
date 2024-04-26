@@ -60,7 +60,7 @@ namespace CompanyManagementSystem.Controllers
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
-            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "branch", SearchText = SearchText };
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "products", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
