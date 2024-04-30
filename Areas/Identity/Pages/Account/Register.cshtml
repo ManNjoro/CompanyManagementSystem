@@ -3,12 +3,50 @@
 @{
     ViewData["Title"] = "Register";
 }
-@section title {
 
-<h1>@ViewData["Title"]</h1>
-}
+<div class="full-screen-container">
+    <div class="login-container">
+        <h2 class="login-title">Create a new account.</h2>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="input-group">
+                <label asp-for="Input.Firstname">Firstname</label>
+                <input asp-for="Input.Firstname" autocomplete="username" aria-required="true" id="firstname">
+                <span asp-validation-for="Input.Firstname" class="text-danger"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="Input.Lastname">Lastname</label>
+                <input asp-for="Input.Lastname" autocomplete="username" aria-required="true" id="lastname">
+                <span asp-validation-for="Input.Lastname" class="msg text-danger"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" autocomplete="username" aria-required="true" id="email">
+                <span asp-validation-for="Input.Email" class="msg text-danger"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" autocomplete="new-password" aria-required="true" id="password">
+                <span asp-validation-for="Input.Password" class="msg text-danger"></span>
+            </div>
+            <div class="input-group">
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" autocomplete="new-password" aria-required="true" id="confirmPassword">
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="login-button w-100 btn btn-lg btn-primary">Register</button>
+            <div>
+                <p>
+                    <a class="text-white" asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl">Already Have an Account?</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
 
-<div class="row">
+
+
+@* <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
@@ -39,15 +77,9 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            @* <div class="form-floating mb-3">
-                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select" aria-required="true">
-                    <option disabled selected>Select Role</option>
-                </select>
-                <span asp-validation-for="Input.Role" class="text-danger"></span>
-            </div> *@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
-    </div>
+    </div> *@
     @* <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>

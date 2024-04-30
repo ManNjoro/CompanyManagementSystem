@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - CompanyManagementSystem</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CompanyManagementSystem.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet" />
 </head>
@@ -75,11 +76,11 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container mt-0" style="margin-bottom: 61px;">
         @if (IsSectionDefined("title"))
         {
 
-            <div class="pb-3">
+            <div class="">
                 @RenderSection("title")
                 <hr />
             </div>

@@ -110,9 +110,17 @@ namespace CompanyManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
+                try
+                {
+
                 _db.Employees.Add(employee);
                 _db.SaveChanges();
                 TempData["AlertMessage"] = "Employee Created Successfully...";
+                }
+                catch (Exception ex)
+                {
+                    TempData["AlertMessage"] = ex.ToString();
+                }
                 return RedirectToAction(nameof(Index));
             }
 
