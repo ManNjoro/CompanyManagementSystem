@@ -49,7 +49,7 @@ namespace CompanyManagementSystem.Controllers
             if (SearchText != "" && SearchText != null)
             {
                 sales = _db.Sales
-                    .Where(work => work.ClientId.Contains(SearchText))
+                    .Where(work => work.ClientId.Contains(SearchText) || work.ProductType.Contains(SearchText))
                     .ToList();
             }
             else
@@ -60,7 +60,7 @@ namespace CompanyManagementSystem.Controllers
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = sales.Skip(recSkip).Take(pager.PageSize).ToList();
-            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "branchsuppliers", SearchText = SearchText };
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "sales", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);

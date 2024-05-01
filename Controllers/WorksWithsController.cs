@@ -72,7 +72,7 @@ namespace CompanyManagementSystem.Controllers
             var pager = new Pager(recsCount, pg, pageSize);
             int recSkip = (pg - 1) * pageSize;
             var data = worksWith.Skip(recSkip).Take(pager.PageSize).ToList();
-            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "branchsuppliers", SearchText = SearchText };
+            SPager SearchPager = new SPager(recsCount, pg, pageSize) { Action = "index", Controller = "workswiths", SearchText = SearchText };
             ViewBag.SearchPager = SearchPager;
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
@@ -116,6 +116,10 @@ namespace CompanyManagementSystem.Controllers
                 return NotFound();
             }
 
+            try
+            {
+
+
             if (ModelState.IsValid)
             {
                 worksWith.TotalSales = _db.Sales
@@ -125,6 +129,11 @@ namespace CompanyManagementSystem.Controllers
                 _db.SaveChanges();
                 TempData["AlertMessage"] = "Record Created Successfully...";
                 return RedirectToAction(nameof(Index));
+            }
+            } catch(Exception e)
+            {
+                TempData["error"] = "Record Already exists";
+                return RedirectToAction(nameof(Add));
             }
 
             return View(worksWith);

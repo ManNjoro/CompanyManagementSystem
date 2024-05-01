@@ -48,7 +48,7 @@ namespace CompanyManagementSystem.Controllers
             if (SearchText != "" && SearchText != null)
             {
                 employees = _db.Employees
-                    .Where(cat => cat.FirstName.Contains(SearchText))
+                    .Where(cat => cat.FirstName.Contains(SearchText) || cat.LastName.Contains(SearchText))
                     .ToList();
             }
             else
@@ -119,7 +119,7 @@ namespace CompanyManagementSystem.Controllers
                 }
                 catch (Exception ex)
                 {
-                    TempData["AlertMessage"] = ex.ToString();
+                    TempData["AlertMessage"] = "Employee was not created";
                 }
                 return RedirectToAction(nameof(Index));
             }

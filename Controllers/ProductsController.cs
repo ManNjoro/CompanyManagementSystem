@@ -49,7 +49,7 @@ namespace CompanyManagementSystem.Controllers
             if (SearchText != "" && SearchText != null)
             {
                 products = _db.Products
-                    .Where(cat => cat.Name.Contains(SearchText))
+                    .Where(cat => cat.Name.Contains(SearchText) || cat.Description.Contains(SearchText))
                     .ToList();
             }
             else

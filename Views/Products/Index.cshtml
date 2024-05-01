@@ -3,10 +3,13 @@
 @section title {
     <div class="container mt-1 d-flex justify-content-between align-items-center">
         <h3>Products</h3>
+        @if (User.IsInRole("Admin")) {
+
         <div class="">
             <a class="btn btn-success" asp-controller="products" asp-action="create">Create Product</a>
 
         </div>
+        }
     </div>
 }
 
