@@ -167,6 +167,10 @@ body {
         border-radius: 10px !important;
         font-weight: bold;
     }
+.list-group-item {
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 
 /* Media query for small screens */
 @media screen and (max-width: 768px) {

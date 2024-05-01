@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="04/01/2024 10:41:37" ReportInfo.Modified="04/01/2024 10:42:51" ReportInfo.CreatorVersion="2022.2.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="Dashboard" ReferenceName="DashboardRef" DataType="null" Enabled="true">
+		<Column Name="Item" DataType="System.String"/>
+		<Column Name="Count" DataType="System.Int32"/>
+    </BusinessObjectDataSource>
+  </Dictionary>
+</Report>

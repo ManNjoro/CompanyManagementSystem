@@ -1,6 +1,9 @@
 ﻿@section title {
-    <div class="container mt-1 d-flex justify-content-between align-items-center">
+    <div class="container mt-3 d-flex justify-content-between align-items-center">
         <h3>Dashboard</h3>
+        <div class="">
+            <a class="btn btn-primary" asp-controller="dashboard" asp-action="Generate">Download Report</a>
+        </div>
     </div>
 }
 
@@ -10,6 +13,55 @@
         @foreach (var itemCount in ViewBag.ItemCounts)
         {
             <li>@itemCount.Key: @itemCount.Value</li>
+        }
+    </ul>
+</div>
+<div class="container mt-5">
+    <h3>Recent Employees</h3>
+    <ul class="list-group">
+        @foreach (var user in ViewBag.RecentEmployees)
+        {
+            <li class="list-group-item">@user.FirstName @user.LastName - @user.UpdatedAt</li>
+        }
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <h3>Recent Branches</h3>
+    <ul class="list-group">
+        @foreach (var branch in ViewBag.RecentBranches)
+        {
+            <li class="list-group-item">@branch.BranchName - @branch.UpdatedAt</li>
+        }
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <h3>Recent Branches Suppliers</h3>
+    <ul class="list-group">
+        @foreach (var supplier in ViewBag.RecentBranchesSuppliers)
+        {
+            <li class="list-group-item">@supplier.SupplierName @supplier.SupplyType - @supplier.UpdatedAt</li>
+        }
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <h3>Recent Sales</h3>
+    <ul class="list-group">
+        @foreach (var sale in ViewBag.RecentSales)
+        {
+            <li class="list-group-item">@sale.ProductType Ksh @sale.Cost - @sale.UpdatedAt</li>
+        }
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <h3>Recent Clients</h3>
+    <ul class="list-group">
+        @foreach (var client in ViewBag.RecentClients)
+        {
+            <li class="list-group-item">@client.ClientName - @client.UpdatedAt</li>
         }
     </ul>
 </div>

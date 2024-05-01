@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Report ScriptLanguage="CSharp" ReportInfo.Created="03/14/2024 13:27:37" ReportInfo.Modified="03/14/2024 15:01:51" ReportInfo.CreatorVersion="2022.2.0.0">
   <Dictionary>
-    <BusinessObjectDataSource Name="Employee" DataType="null" Enabled="true">
+    <BusinessObjectDataSource Name="Employee" ReferenceName="EmployeeRef" DataType="null" Enabled="true">
       <Column Name="EmpId" DataType="System.String"/>
       <Column Name="UserId" DataType="System.String"/>
       <Column Name="FirstName" DataType="System.String"/>
