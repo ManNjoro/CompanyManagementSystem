@@ -340,3 +340,24 @@ body {
         bottom: 100%;
     }
 }
+
+.logo {
+    animation: move 2s ease-in-out infinite;
+}
+
+
+@keyframes move {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

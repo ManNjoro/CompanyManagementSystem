@@ -120,3 +120,7 @@ body {
 .input-group.error .msg {
     color: hsl(var(--error-hsl));
 }
+
+.profile-img-icon {
+    border-radius: 50%;
+}
