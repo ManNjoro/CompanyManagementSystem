@@ -15,11 +15,13 @@ namespace CompanyManagementSystem.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment)
+        private readonly ILogger<EmployeesController> _logger;
+        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, ILogger<EmployeesController> logger)
         {
             _db = db;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -40,6 +42,21 @@ namespace CompanyManagementSystem.Controllers
                     pagesSizes.Add(new SelectListItem(lp.ToString(), lp.ToString()));
             }
             return pagesSizes;
+        }
+        private void LogAuditTrail(string actionType, string tableName, string entityId)
+        {
+            var auditLog = new AuditLogs
+            {
+                UserId = User.Identity.Name, // Assuming you have authentication configured
+                ActionType = actionType,
+                TableName = tableName,
+                Timestamp = DateTime.Now,
+                EntityId = entityId
+            };
+
+            // Save audit log to the database
+            _db.AuditLogs.Add(auditLog);
+            _db.SaveChanges();
         }
 
         public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
@@ -112,10 +129,10 @@ namespace CompanyManagementSystem.Controllers
             {
                 try
                 {
-
-                _db.Employees.Add(employee);
-                _db.SaveChanges();
-                TempData["AlertMessage"] = "Employee Created Successfully...";
+                    _db.Employees.Add(employee);
+                    LogAuditTrail("Create", "employees", employee.EmpId);
+                    _db.SaveChanges();
+                    TempData["AlertMessage"] = "Employee Created Successfully...";
                 }
                 catch (Exception ex)
                 {

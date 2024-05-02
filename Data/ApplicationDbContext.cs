@@ -19,6 +19,7 @@ namespace CompanyManagementSystem.Data
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<AuditLogs> AuditLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
