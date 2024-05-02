@@ -4,6 +4,11 @@ namespace CompanyManagementSystem.Models
 {
     public class PageSize
     {
+        /// <summary>
+        /// Get a list of page sizes
+        /// </summary>
+        /// <param name="selectedPageSize">Selected page size</param>
+        /// <returns>List of SelectListItem for page sizes</returns>
         public List<SelectListItem> GetSize(int selectedPageSize = 10)
         {
             return GetPageSizes(selectedPageSize);

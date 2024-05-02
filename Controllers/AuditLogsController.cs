@@ -78,6 +78,10 @@ namespace CompanyManagementSystem.Controllers
             return View(data);
         }
 
+        /// <summary>
+        /// Generate a PDF report of employees
+        /// </summary>
+        /// <returns>PDF file result</returns>
         public FileResult Generate()
         {
             FastReport.Utils.Config.WebMode = true;

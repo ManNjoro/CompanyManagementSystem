@@ -17,6 +17,14 @@ namespace CompanyManagementSystem.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<EmployeesController> _logger;
         private readonly Audit _audit;
+        /// <summary>
+        /// Constructor for EmployeesController
+        /// </summary>
+        /// <param name="db">ApplicationDbContext instance</param>
+        /// <param name="userManager">UserManager instance</param>
+        /// <param name="webHostEnvironment">IWebHostEnvironment instance</param>
+        /// <param name="logger">ILogger instance</param>
+        /// <param name="audit">Audit instance</param>
         public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, ILogger<EmployeesController> logger, Audit audit)
         {
             _db = db;
@@ -26,6 +34,11 @@ namespace CompanyManagementSystem.Controllers
             _audit = audit;
         }
 
+        /// <summary>
+        /// Get a list of page sizes
+        /// </summary>
+        /// <param name="selectedPageSize">Selected page size</param>
+        /// <returns>List of SelectListItem for page sizes</returns>
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
         {
             var pagesSizes = new List<SelectListItem>();
@@ -46,6 +59,15 @@ namespace CompanyManagementSystem.Controllers
             return pagesSizes;
         }
 
+        /// <summary>
+        /// Display a paginated list of employees
+        /// </summary>
+        /// <param name="pg">Page number</param>
+        /// <param name="SearchText">Search text</param>
+        /// <param name="pageSize">Page size</param>
+        /// <param name="SortBy">Sort by</param>
+        /// <param name="direction">Sort direction</param>
+        /// <returns>View with a paginated list of employees</returns>
         public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5, string SortBy = "", string direction = "down")
         {
             List<Employee> employees;
@@ -99,7 +121,10 @@ namespace CompanyManagementSystem.Controllers
             this.ViewBag.PageSizes = GetPageSizes(pageSize);
             return View(data);
         }
-
+        /// <summary>
+        /// Display the form to add a new employee
+        /// </summary>
+        /// <returns>View with the form to add a new employee</returns>
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
@@ -149,6 +174,11 @@ namespace CompanyManagementSystem.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Post method to add a new employee
+        /// </summary>
+        /// <param name="employee">Employee object to add</param>
+        /// <returns>Redirect to index view</returns>
         [HttpPost]
         public IActionResult Add(Employee employee)
         {
@@ -176,6 +206,11 @@ namespace CompanyManagementSystem.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Display the form to edit an existing employee
+        /// </summary>
+        /// <param name="id">Employee ID</param>
+        /// <returns>View with the form to edit an existing employee</returns>
         public IActionResult Edit(string id)
         {
             ViewBag.Action = "Edit";
@@ -235,6 +270,11 @@ namespace CompanyManagementSystem.Controllers
         }
 
 
+        /// <summary>
+        /// Post method to edit an existing employee
+        /// </summary>
+        /// <param name="employee">Employee object to edit</param>
+        /// <returns>Redirect to index view</returns>
         [HttpPost]
         public IActionResult Edit(Employee employee)
         {
@@ -279,6 +319,11 @@ namespace CompanyManagementSystem.Controllers
             return View(employee);
         }
 
+        /// <summary>
+        /// Delete an existing employee
+        /// </summary>
+        /// <param name="employeeId">Employee ID</param>
+        /// <returns>Redirect to index view</returns>
         public IActionResult Delete(string employeeId)
         {
             try
@@ -301,6 +346,10 @@ namespace CompanyManagementSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Generate a PDF report of employees
+        /// </summary>
+        /// <returns>PDF file result</returns>
         public FileResult Generate()
         {
             FastReport.Utils.Config.WebMode = true;
