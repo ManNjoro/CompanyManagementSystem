@@ -1,5 +1,4 @@
 ﻿using CompanyManagementSystem.Data;
-using CompanyManagementSystem.Migrations;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 using Microsoft.AspNetCore.Authorization;

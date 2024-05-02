@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
-using CompanyManagementSystem.Migrations;
 using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyManagementSystem.Controllers
