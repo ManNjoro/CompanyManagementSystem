@@ -41,7 +41,7 @@
                                 </ul>
                             </li>
                         }
-                        
+
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Staff</a>
                             <ul class="dropdown-menu">
@@ -62,7 +62,7 @@
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
-                            
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
                             </li>
@@ -73,6 +73,15 @@
                                 <a class="nav-link text-dark" asp-controller="auditlogs" asp-action="index">Logs</a>
                             </li>
                         }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Help</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="https://scribehow.com/shared/Register_and_login_on_a_website_guide__SXyTmZfnTXqlnPFry17u0w" target="_blank">Register_login_guide</a></li>
+                                <li><a class="dropdown-item" href="https://scribehow.com/shared/Guide_to_Making_Sales_in_Staff_Panel__Wx-QBgKsRNeYURd-8-Xwiw" target="_blank">Make Sale Guide</a></li>
+                                <li><a class="dropdown-item" href="https://scribehow.com/shared/User_Profile__tansjB7kTqOy-_koG0gGaw" target="_blank">User Profile Guide</a></li>
+
+                            </ul>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

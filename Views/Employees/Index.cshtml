@@ -45,10 +45,10 @@
                 <tr>
                     <th>EmployeeID</th>
                     @* <th>UserID</th> *@
-                    <th>FullName</th>
+                    <th style="width: 13%">FullName&nbsp;<a asp-controller="employees" asp-action="index" asp-route-sortBy="name" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr;</a> &nbsp; <a asp-controller="employees" asp-action="index" asp-route-sortBy="name" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></th>
                     <th>Birthday</th>
-                    <th>Sex</th>
-                    <th>Salary</th>
+                    <th style="width: 8%">Sex <a asp-controller="employees" asp-action="index" asp-route-sortBy="sex" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr;</a> &nbsp; <a asp-controller="employees" asp-action="index" asp-route-sortBy="sex" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></th>
+                    <th style="width: 10%">Salary <a asp-controller="employees" asp-action="index" asp-route-sortBy="salary" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr;</a> &nbsp; <a asp-controller="employees" asp-action="index" asp-route-sortBy="salary" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></th>
                     <th>Supervisor ID</th>
                     <th>Branch ID</th>
                     @if (User.IsInRole("Admin"))

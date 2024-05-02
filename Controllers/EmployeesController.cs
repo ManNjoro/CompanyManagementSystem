@@ -46,7 +46,7 @@ namespace CompanyManagementSystem.Controllers
             return pagesSizes;
         }
 
-        public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
+        public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5, string SortBy = "", string direction = "down")
         {
             List<Employee> employees;
             if (SearchText != "" && SearchText != null)
@@ -56,7 +56,38 @@ namespace CompanyManagementSystem.Controllers
                     .ToList();
             }
             else
-                employees = _db.Employees.OrderByDescending(employee => employee.UpdatedAt).ToList();
+                employees = _db.Employees.ToList();
+
+            switch (SortBy)
+            {
+                case "name":
+                    if (direction == "down")
+                    {
+
+                        employees = employees.OrderByDescending(log => log.FirstName).ToList();
+                    }
+                    else if (direction == "up")
+                    {
+                        employees = employees.OrderBy(log => log.FirstName).ToList();
+                    }
+                    break;
+                case "sex":
+                    if (direction == "down")
+                        employees = employees.OrderByDescending(log => log.Sex).ToList();
+                    else if (direction == "up")
+                        employees = employees.OrderBy(log => log.Sex).ToList();
+                    break;
+                case "salary":
+                    if (direction == "down")
+                        employees = employees.OrderByDescending(log => log.Salary).ToList();
+                    else if (direction == "up")
+                        employees = employees.OrderBy(log => log.Salary).ToList();
+                    break;
+                default:
+
+                    employees = employees.OrderByDescending(log => log.UpdatedAt).ToList();
+                    break;
+            }
 
             if (pg < 1) pg = 1;
             int recsCount = employees.Count();

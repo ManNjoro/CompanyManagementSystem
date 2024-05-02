@@ -3,12 +3,17 @@
 
 <div class="container mt-3">
     <div class="row justify-content-between align-items-center">
-        <div class="col-12 col-md-6">
+        <div class="col-14 col-md-7 d-flex mb-2 gap-2">
             <form class="d-flex mb-2" asp-controller="@Model.Controller" asp-action="@Model.Action">
                 <input class="form-control me-2" type="search" name="SearchText" value="@Model.SearchText" placeholder="Search..." aria-label="Search" />
                 <button class="btn btn-outline-success">Search</button>
             </form>
+            <form class="d-flex mb-2" asp-controller="@Model.Controller" asp-action="@Model.Action">
+
+                <button class="btn btn-primary">Get All</button>
+            </form>
         </div>
+        
         <div class="col-auto">
             @if (Model.TotalPages > 0)
             {

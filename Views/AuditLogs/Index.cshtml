@@ -4,7 +4,7 @@
     <div class="container mt-1 d-flex justify-content-between align-items-center">
         <h3>Audit Trails</h3>
         <div class="">
-            <a class="btn btn-primary" asp-controller="" asp-action="">Download Report</a>
+            <a class="btn btn-primary" asp-controller="auditlogs" asp-action="generate">Download Report</a>
         </div>
     </div>
 }
@@ -40,14 +40,15 @@
     }
 
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>UserID</th>
-                    <th>ActionType</th>
-                    <th>TableName</th>
-                    <th>TimeStamp</th>
+                    <th>ActionType <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="ActionType" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr;</a> &nbsp; <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="ActionType" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></th>
+                    <th>TableName <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="TableName" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr; &nbsp; <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="TableName" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></a></th>
+                    <th>TimeStamp <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="TimeStamp" asp-route-direction="up" class="text-black fw-bold fs-5 text-decoration-none"> &uarr; &nbsp; <a asp-controller="auditlogs" asp-action="index" asp-route-sortBy="TimeStamp" asp-route-direction="down" class="text-black fw-bold fs-5 text-decoration-none"> &darr;</a></a></th>
                     <th>EntityId</th>
                     @* @if (User.IsInRole("Admin"))
                     {
