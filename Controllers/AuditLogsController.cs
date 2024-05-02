@@ -86,11 +86,14 @@ namespace CompanyManagementSystem.Controllers
             rep.Load(path);
 
             // Add your report generation logic here
-            var logs = _db.AuditLogs.OrderByDescending(u => u.Timestamp).Take(10).ToList().ToList();
+            var logs = _db.AuditLogs.OrderByDescending(u => u.Timestamp).ToList();
             rep.RegisterData(logs, "AuditRef");
 
             if (rep.Report.Prepare())
             {
+                try
+                {
+
                 FastReport.Export.PdfSimple.PDFSimpleExport pdfExport = new FastReport.Export.PdfSimple.PDFSimpleExport();
                 pdfExport.ShowProgress = false;
                 pdfExport.Subject = "Subject Report";
@@ -101,6 +104,10 @@ namespace CompanyManagementSystem.Controllers
                 pdfExport.Dispose();
                 ms.Position = 0;
                 return File(ms, "application/pdf", "AuditTrailsReport.pdf");
+                } catch (Exception e)
+                {
+                    return null;
+                }
             }
             else
             {
