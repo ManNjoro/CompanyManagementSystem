@@ -1,4 +1,5 @@
 ﻿using CompanyManagementSystem.Data;
+using CompanyManagementSystem.Migrations;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 using Microsoft.AspNetCore.Authorization;
@@ -16,12 +17,14 @@ namespace CompanyManagementSystem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _db;
+        private readonly Audit _audit;
 
-        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ApplicationDbContext db, Audit audit)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _db = db;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -140,6 +143,7 @@ namespace CompanyManagementSystem.Controllers
                     if (updateResult.Succeeded)
                     {
                         TempData["AlertMessage"] = "User updated successfully.";
+                        _audit.LogAudit("Update", "aspnetusers", model.applicationUser.Id, User.Identity.Name, _db);
                         return RedirectToAction(nameof(Index));
                     }
 
@@ -187,6 +191,7 @@ namespace CompanyManagementSystem.Controllers
             if (result.Succeeded)
             {
                 TempData["AlertMessage"] = "User Deleted Successfully...";
+                _audit.LogAudit("Delete", "aspnetusers", userId, User.Identity.Name, _db);
                 return RedirectToAction(nameof(Index));
             }
 
