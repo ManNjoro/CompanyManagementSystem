@@ -16,10 +16,12 @@ namespace CompanyManagementSystem.Controllers
     public class ClientsController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly Audit _audit;
 
-        public ClientsController(ApplicationDbContext db)
+        public ClientsController(ApplicationDbContext db, Audit audit)
         {
             _db = db;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)

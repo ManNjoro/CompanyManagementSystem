@@ -18,6 +18,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<Audit>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

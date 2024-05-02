@@ -17,10 +17,12 @@ namespace CompanyManagementSystem.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IFileService _fileService;
-        public ProductsController(ApplicationDbContext db, IFileService fileService)
+        private readonly Audit _audit;
+        public ProductsController(ApplicationDbContext db, IFileService fileService, Audit audit)
         {
             _db = db;
             this._fileService = fileService;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)

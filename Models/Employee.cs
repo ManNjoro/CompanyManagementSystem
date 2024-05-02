@@ -63,6 +63,10 @@ namespace CompanyManagementSystem.Models
         public List<SelectListItem>? BranchOptions { get; set; }
         [NotMapped]
         public List<SelectListItem>? UserOptions { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? FirstNames { get; set; }
+        [NotMapped]
+        public List<SelectListItem>? LastNames { get; set; }
 
         public Employee()
         {

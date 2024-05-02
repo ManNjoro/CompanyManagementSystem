@@ -15,7 +15,9 @@
             <label asp-for="FirstName" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="FirstName" class="form-control" />
+            <select asp-for="FirstName" class="form-control form-select" asp-items="@Model.FirstNames">
+                <option disabled selected>Select FirstName</option>
+            </select>
         </div>
         <div class="col">
             <span class="text-danger" asp-validation-for="FirstName"></span>
@@ -26,7 +28,9 @@
             <label asp-for="LastName" class="col-form-label"></label>
         </div>
         <div class="col-6">
-            <input type="text" asp-for="LastName" class="form-control" />
+            <select asp-for="LastName" class="form-control form-select" asp-items="@Model.LastNames">
+                <option disabled selected>Select LastName</option>
+            </select>
         </div>
         <div class="col">
             <span class="text-danger" asp-validation-for="LastName"></span>

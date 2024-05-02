@@ -11,9 +11,11 @@ namespace CompanyManagementSystem.Controllers
     public class BranchController : Controller
     {
         private readonly ApplicationDbContext _db;
-        public BranchController(ApplicationDbContext db)
+        private readonly Audit _audit;
+        public BranchController(ApplicationDbContext db, Audit audit)
         {
             _db = db;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -86,6 +88,7 @@ namespace CompanyManagementSystem.Controllers
             {
                 _db.Branches.Add(branch);
                 _db.SaveChanges();
+                _audit.LogAudit("Create", "branches", branch.BranchId, User.Identity.Name, _db);
                 TempData["AlertMessage"] = "Branch Created Successfully...";
                 return RedirectToAction(nameof(Index));
             }
@@ -138,6 +141,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "branches", branch.BranchId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Branch Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -162,6 +166,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.Branches.Remove(branch);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "branches", branchId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Branch Deleted Successfully...";
                 }
             }

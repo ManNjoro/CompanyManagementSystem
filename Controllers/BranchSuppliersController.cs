@@ -16,10 +16,12 @@ namespace CompanyManagementSystem.Controllers
     public class BranchSuppliersController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly Audit _audit;
 
-        public BranchSuppliersController(ApplicationDbContext db)
+        public BranchSuppliersController(ApplicationDbContext db, Audit audit)
         {
             _db = db;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)

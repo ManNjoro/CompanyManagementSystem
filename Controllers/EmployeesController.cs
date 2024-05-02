@@ -16,12 +16,14 @@ namespace CompanyManagementSystem.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly ILogger<EmployeesController> _logger;
-        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, ILogger<EmployeesController> logger)
+        private readonly Audit _audit;
+        public EmployeesController(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IWebHostEnvironment webHostEnvironment, ILogger<EmployeesController> logger, Audit audit)
         {
             _db = db;
             _userManager = userManager;
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
+            _audit = audit;
         }
 
         private List<SelectListItem> GetPageSizes(int selectedPageSize = 10)
@@ -42,21 +44,6 @@ namespace CompanyManagementSystem.Controllers
                     pagesSizes.Add(new SelectListItem(lp.ToString(), lp.ToString()));
             }
             return pagesSizes;
-        }
-        private void LogAuditTrail(string actionType, string tableName, string entityId)
-        {
-            var auditLog = new AuditLogs
-            {
-                UserId = User.Identity.Name, // Assuming you have authentication configured
-                ActionType = actionType,
-                TableName = tableName,
-                Timestamp = DateTime.Now,
-                EntityId = entityId
-            };
-
-            // Save audit log to the database
-            _db.AuditLogs.Add(auditLog);
-            _db.SaveChanges();
         }
 
         public IActionResult Index(int pg = 1, string SearchText = "", int pageSize = 5)
@@ -86,6 +73,8 @@ namespace CompanyManagementSystem.Controllers
         {
             ViewBag.Action = "Add";
             var model = new Employee();
+            var firstnames = _userManager.Users.ToList();
+            var lastnames = _userManager.Users.ToList();
             var supervisors = _db.Employees.ToList();
             var branches = _db.Branches.ToList();
             var users = _userManager.Users.ToList();
@@ -114,6 +103,18 @@ namespace CompanyManagementSystem.Controllers
                 Text = $"{u.Firstname} {u.Lastname}"
             }).ToList();
 
+            model.FirstNames = firstnames.Select(f => new SelectListItem
+            {
+                Value = f.Firstname,
+                Text = f.Firstname
+            }).ToList();
+
+            model.LastNames = lastnames.Select(l => new SelectListItem
+            {
+                Value = l.Lastname,
+                Text = l.Lastname
+            }).ToList();
+
             return View(model);
         }
 
@@ -130,8 +131,8 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.Employees.Add(employee);
-                    LogAuditTrail("Create", "employees", employee.EmpId);
                     _db.SaveChanges();
+                    _audit.LogAudit("Create", "employees", employee.EmpId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Employee Created Successfully...";
                 }
                 catch (Exception ex)
@@ -155,6 +156,8 @@ namespace CompanyManagementSystem.Controllers
 
             // Fetch all employees for supervisor options
             var employees = _db.Employees.ToList();
+            var firstnames = _userManager.Users.ToList();
+            var lastnames = _userManager.Users.ToList();
 
             employee.SexOptions = new List<SelectListItem>
             {
@@ -183,6 +186,18 @@ namespace CompanyManagementSystem.Controllers
             {
                 Value = u.Id,
                 Text = $"{u.Firstname} {u.Lastname}"
+            }).ToList();
+
+            employee.FirstNames = firstnames.Select(f => new SelectListItem
+            {
+                Value = f.Firstname,
+                Text = f.Firstname
+            }).ToList();
+
+            employee.LastNames = lastnames.Select(l => new SelectListItem
+            {
+                Value = l.Lastname,
+                Text = l.Lastname
             }).ToList();
 
             return View(employee);
@@ -217,6 +232,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "employees", employee.EmpId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Employee Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -241,6 +257,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.Employees.Remove(employee);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "employees", employeeId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Employee Deleted Successfully...";
                 }
             }
