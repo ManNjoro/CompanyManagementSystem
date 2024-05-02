@@ -1,22 +1,20 @@
 ﻿@using CompanyManagementSystem.Views.Shared.Components.SearchBar;
-@model List<Employee>
+@model List<AuditLogs>
 @section title {
     <div class="container mt-1 d-flex justify-content-between align-items-center">
-        <h3>Employees</h3>
-        @if (User.IsInRole("Admin"))
-        {
-            
+        <h3>Audit Trails</h3>
         <div class="">
-            <a class="btn btn-success" asp-controller="employees" asp-action="add">Add Employee</a>
+            <a class="btn btn-primary" asp-controller="" asp-action="">Download Report</a>
         </div>
-        }
     </div>
 }
 
 @if (Model != null && Model.Count() == 0)
 {
-    <p>Oops! No employee to display</p>
+    <p>Oops! No Logs currently</p>
 }
+
+
 
 @{
     SPager pager = new SPager();
@@ -26,62 +24,61 @@
         pager = ViewBag.SearchPager;
         pageNo = pager.CurrentPage;
     }
+
+
 }
 
 @if (Model != null && Model.Count() > 0)
 {
     @if (@TempData["AlertMessage"] != null)
     {
+
         <div class="alert alert-success alert-dismissible" role="alert">
             @TempData["AlertMessage"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
 
-    <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false" class="flex-grow-1"></vc:search-bar>
+    <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="false"></vc:search-bar>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>EmployeeID</th>
-                    @* <th>UserID</th> *@
-                    <th>FullName</th>
-                    <th>Birthday</th>
-                    <th>Sex</th>
-                    <th>Salary</th>
-                    <th>Supervisor ID</th>
-                    <th>Branch ID</th>
-                    @if (User.IsInRole("Admin"))
+                    <th>UserID</th>
+                    <th>ActionType</th>
+                    <th>TableName</th>
+                    <th>TimeStamp</th>
+                    <th>EntityId</th>
+                    @* @if (User.IsInRole("Admin"))
                     {
+
                         <th></th>
                         <th></th>
-                    }
+                    } *@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var employee in Model)
+                @foreach (var log in Model)
                 {
                     <tr>
-                        <td>@employee.EmpId</td>
-                        @* <td>@employee.UserId</td> *@
-                        <td>@employee.FirstName @employee.LastName</td>
-                        <td>@employee.BirthDay.ToString("dd/MM/yyyy")</td>
-                        <td>@employee.Sex</td>
-                        <td>@employee.Salary</td>
-                        <td>@employee.SupervisorId</td>
-                        <td>@employee.BranchId</td>
-                        @if (User.IsInRole("Admin"))
+                        <td>@log.UserId</td>
+                        <td>@log.ActionType</td>
+                        <td>@log.TableName</td>
+                        <td>@log.Timestamp</td>
+                        <td>@log.EntityId</td>
+                        @* @if (User.IsInRole("Admin"))
                         {
-                            <td><a class="btn btn-success" asp-controller="employees" asp-action="edit" asp-route-id="@employee.EmpId">Edit</a></td>
+
+                            <td><a class="btn btn-success" asp-controller="branchsuppliers" asp-action="edit" asp-route-id="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName">Edit</a></td>
                             <td>
                                 <div class="modal-btn">
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@employee.EmpId" data-store-id="@employee.EmpId" id="deleteUser">Delete</button>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" data-store-id="@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" id="deleteUser">Delete</button>
                                 </div>
                             </td>
-                        }
+                        } *@
                     </tr>
                     <!--Delete Modal -->
-                    <div class="modal fade" id="deleteUser-@employee.EmpId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    @* <div class="modal fade" id="deleteUser-@supplier.BranchId-@supplier.SupplierName.Replace(" ", "-").Replace("&", "-").Replace(".", "-")" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -93,14 +90,15 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <a class="btn btn-primary" asp-controller="employees" asp-action="delete" asp-route-employeeid="@employee.EmpId" id="confirm-delete-user">Ok</a>
+                                    <a class="btn btn-primary" asp-controller="branchsuppliers" asp-action="delete" asp-route-branchId="@supplier.BranchId" asp-route-supplierName="@supplier.SupplierName" id="confirm-delete-user">Ok</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> *@
                 }
             </tbody>
         </table>
     </div>
     <vc:search-bar search-pager="@ViewBag.SearchPager" bottom-bar="true"></vc:search-bar>
+
 }

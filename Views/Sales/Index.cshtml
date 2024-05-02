@@ -47,8 +47,8 @@
             <tr>
                 <th>Sale ID</th>
                 <th>Product</th>
-                <th>Employee ID</th>
-                <th>Client ID</th>
+@*                 <th>Employee ID</th>
+                <th>Client ID</th> *@
                 <th>Cost</th>
                 <th></th>
                 <th></th>
@@ -60,8 +60,8 @@
                 <tr>
                     <td>@record.SaleId</td>
                     <td>@record.ProductType</td>
-                    <td>@record.EmpId</td>
-                    <td>@record.ClientId</td>
+                    @* <td>@record.EmpId</td>
+                    <td>@record.ClientId</td> *@
                     <td>@record.Cost</td>
                     <td><a class="btn btn-success" asp-controller="sales" asp-action="edit" asp-route-saleId="@record.SaleId">Edit</a></td>
                     <td>
