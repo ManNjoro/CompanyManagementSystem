@@ -83,7 +83,7 @@ namespace CompanyManagementSystem.Controllers
         {
             ViewBag.Action = "Add";
             var model = new WorksWith();
-           
+
             var employees = _db.Employees.ToList();
             var clients = _db.Clients.ToList();
             model.EmployeeOptions = employees.Select(b => new SelectListItem
@@ -121,17 +121,19 @@ namespace CompanyManagementSystem.Controllers
             {
 
 
-            if (ModelState.IsValid)
-            {
-                worksWith.TotalSales = _db.Sales
-                .Where(s => s.EmpId == worksWith.EmpId && s.ClientId == worksWith.ClientId)
-                .Sum(s => s.Cost);
-                _db.WorksWith.Add(worksWith);
-                _db.SaveChanges();
-                TempData["AlertMessage"] = "Record Created Successfully...";
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    worksWith.TotalSales = _db.Sales
+                    .Where(s => s.EmpId == worksWith.EmpId && s.ClientId == worksWith.ClientId)
+                    .Sum(s => s.Cost);
+                    _db.WorksWith.Add(worksWith);
+                    _db.SaveChanges();
+                    _audit.LogAudit("Create", "workswith", $"{worksWith.EmpId} - {worksWith.ClientId}", User.Identity.Name, _db);
+                    TempData["AlertMessage"] = "Record Created Successfully...";
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            } catch(Exception e)
+            catch (Exception e)
             {
                 TempData["error"] = "Record Already exists";
                 return RedirectToAction(nameof(Add));
@@ -196,6 +198,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "workswith", $"{worksWith.EmpId} - {worksWith.ClientId}", User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Record Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -220,6 +223,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.WorksWith.Remove(record);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "workswith", $"{empId} - {clientId}", User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Record Deleted Successfully...";
                 }
             }

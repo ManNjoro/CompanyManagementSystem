@@ -95,9 +95,18 @@ namespace CompanyManagementSystem.Controllers
                         product.ProductImage = result.Item2;
                     }
                 }
-                _db.Products.Add(product);
-                _db.SaveChanges();
-                TempData["AlertMessage"] = "Product Created Successfully...";
+                try
+                {
+
+                    _db.Products.Add(product);
+                    _db.SaveChanges();
+                    _audit.LogAudit("Create", "products", product.ProductId, User.Identity.Name, _db);
+                    TempData["AlertMessage"] = "Product Created Successfully...";
+                }
+                catch (Exception e)
+                {
+                    TempData["AlertMessage"] = "Product was not created";
+                }
                 return RedirectToAction(nameof(Index));
             }
 
@@ -111,7 +120,7 @@ namespace CompanyManagementSystem.Controllers
             if (product == null)
             {
                 return NotFound();
-            }   
+            }
 
             return View(product);
         }
@@ -151,6 +160,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.SaveChanges();
                     TempData["AlertMessage"] = "Product Updated Successfully...";
+                    _audit.LogAudit("Update", "products", product.ProductId, User.Identity.Name, _db);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -174,6 +184,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.Products.Remove(product);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "products", productId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Product Deleted Successfully...";
                 }
             }

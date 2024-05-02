@@ -9,6 +9,7 @@ using CompanyManagementSystem.Data;
 using CompanyManagementSystem.Models;
 using CompanyManagementSystem.Views.Shared.Components.SearchBar;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace CompanyManagementSystem.Controllers
 {
@@ -93,6 +94,7 @@ namespace CompanyManagementSystem.Controllers
             {
                 _db.BranchesSupplier.Add(branchSupplier);
                 _db.SaveChanges();
+                _audit.LogAudit("Create", "branchessupplier", $"{branchSupplier.BranchId} - {branchSupplier.SupplierName}", User.Identity.Name, _db);
                 TempData["AlertMessage"] = "Supplier Created Successfully...";
                 return RedirectToAction(nameof(Index));
             }
@@ -142,6 +144,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "branchessupplier", $"{supplier.BranchId} - {supplier.SupplierName}", User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Supplier Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -166,6 +169,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.BranchesSupplier.Remove(record);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "branchessupplier", $"{ branchId} - {supplierName}", User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Supplier Deleted Successfully...";
                 }
             }

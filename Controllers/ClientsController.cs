@@ -93,6 +93,7 @@ namespace CompanyManagementSystem.Controllers
             {
                 _db.Clients.Add(client);
                 _db.SaveChanges();
+                _audit.LogAudit("Create", "clients", client.ClientId, User.Identity.Name, _db);
                 TempData["AlertMessage"] = "Client Created Successfully...";
                 return RedirectToAction(nameof(Index));
             }
@@ -143,6 +144,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "clients", client.ClientId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Client Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -167,6 +169,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.Clients.Remove(client);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "clients", clientid, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Client Deleted Successfully...";
                 }
             }

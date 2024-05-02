@@ -108,6 +108,7 @@ namespace CompanyManagementSystem.Controllers
             {
                 _db.Sales.Add(sale);
                 _db.SaveChanges();
+                _audit.LogAudit("Create", "sales", sale.SaleId, User.Identity.Name, _db);
                 TempData["AlertMessage"] = "Sale Made Successfully...";
                 return RedirectToAction(nameof(Index));
             }
@@ -172,6 +173,7 @@ namespace CompanyManagementSystem.Controllers
                 try
                 {
                     _db.SaveChanges();
+                    _audit.LogAudit("Update", "sales", sale.SaleId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Sale Updated Successfully...";
                     return RedirectToAction(nameof(Index));
                 }
@@ -196,6 +198,7 @@ namespace CompanyManagementSystem.Controllers
                 {
                     _db.Sales.Remove(sale);
                     _db.SaveChanges();
+                    _audit.LogAudit("Delete", "sales", saleId, User.Identity.Name, _db);
                     TempData["AlertMessage"] = "Sale Deleted Successfully...";
                 }
             }
