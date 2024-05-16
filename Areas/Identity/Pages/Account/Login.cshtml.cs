@@ -118,6 +118,7 @@ namespace CompanyManagementSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    TempData["loggedIn"] = "Logged in successfully";
                     // Get the user
                     var user = await _userManager.FindByEmailAsync(Input.Email);
 

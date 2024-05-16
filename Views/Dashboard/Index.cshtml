@@ -7,6 +7,14 @@
     </div>
 }
 
+@if (@TempData["loggedIn"] != null)
+{
+
+    <div class="alert alert-success alert-dismissible" role="alert">
+        @TempData["loggedIn"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
 <div>
     <h2>Item Counts</h2>
     <ul class="count-container">

@@ -125,6 +125,9 @@ namespace CompanyManagementSystem.Controllers
         /// Display the form to add a new employee
         /// </summary>
         /// <returns>View with the form to add a new employee</returns>
+        /// [Authorize(Roles = "Admin")
+        /// 
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             ViewBag.Action = "Add";
